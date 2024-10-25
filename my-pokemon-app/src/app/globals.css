@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+  @layer utilities {
+    .text-balance {
+      text-wrap: balance;
+    }
+  }
+  @layer utilities {
+    .brightness-custom {
+      filter: brightness(0.6);
+    }
+  }
+  @layer utilities {
+    .btn {
+        @apply bg-gradient-to-tr from-blue-600 to-yellow-300  rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-2xl text-white;
+    }
+}
+@layer components {
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none; /* Kaydırma çubuğunu gizler */
+  }
+  .custom-scrollbar {
+    -ms-overflow-style: none;  /* Internet Explorer için */
+    scrollbar-width: none;  /* Firefox için */
+  }
+}
