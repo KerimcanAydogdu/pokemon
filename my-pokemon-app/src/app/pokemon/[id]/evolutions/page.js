@@ -2,25 +2,26 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 const typeColors = {
-    grass: 'bg-green-500',
-    poison: 'bg-purple-500',
-    fire: 'bg-red-500',
-    water: 'bg-blue-500',
-    flying: 'bg-blue-200',
-    bug: 'bg-lime-500',
-    normal: 'bg-gray-400',
-    electric: 'bg-yellow-500',
-    ground: 'bg-yellow-700',
-    fairy: 'bg-pink-500',
-    fighting: 'bg-red-700',
-    psychic: 'bg-pink-600',
-    rock: 'bg-yellow-600',
-    ghost: 'bg-purple-700',
-    ice: 'bg-blue-300',
-    dragon: 'bg-indigo-700',
-    steel: 'bg-gray-500',
-    dark: 'bg-gray-700'
-  };
+  grass: 'bg-green-500',
+  poison: 'bg-purple-500',
+  fire: 'bg-red-500',
+  water: 'bg-blue-500',
+  flying: 'bg-blue-200',
+  bug: 'bg-lime-500',
+  normal: 'bg-gray-400',
+  electric: 'bg-yellow-500',
+  ground: 'bg-yellow-700',
+  fairy: 'bg-pink-500',
+  fighting: 'bg-red-700',
+  psychic: 'bg-pink-600',
+  rock: 'bg-yellow-600',
+  ghost: 'bg-purple-700',
+  ice: 'bg-blue-300',
+  dragon: 'bg-indigo-700',
+  steel: 'bg-gray-500',
+  dark: 'bg-gray-700'
+};
+
 async function getEvolutions(id) {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
     cache: 'force-cache',
@@ -45,10 +46,8 @@ async function getPokemonDetails(id) {
   return res.json();
 }
 
-const renderEvolutions = async (chain) => {
+const renderEvolutions = (chain, mainType) => {
   const pokemonId = chain.species.url.split('/').slice(-2, -1)[0];
-  const pokemonDetails = await getPokemonDetails(pokemonId);
-  const mainType = pokemonDetails.types[0].type.name;
   const backgroundColor = typeColors[mainType] || 'bg-gray-500';
 
   return (
@@ -66,20 +65,16 @@ const renderEvolutions = async (chain) => {
           className="w-40 h-40 object-contain"
         />
       </Link>
-      <p className="text-gray-200">Boy: {pokemonDetails.height / 10} m</p>
-      <p className="text-gray-200">Ağırlık: {pokemonDetails.weight / 10} kg</p>
-      <p className="text-gray-200">Tecrübe: {pokemonDetails.base_experience}</p>
     </div>
   );
 };
 
-const renderFullEvolutionChain = async (chain) => {
+const renderFullEvolutionChain = (chain) => {
   const evolutions = [chain];
-
 
   if (chain.evolves_to) {
     for (const evolution of chain.evolves_to) {
-      evolutions.push(...await renderFullEvolutionChain(evolution)); // Rekürsif olarak alt evrimleri ekle
+      evolutions.push(...renderFullEvolutionChain(evolution));
     }
   }
 
@@ -89,19 +84,15 @@ const renderFullEvolutionChain = async (chain) => {
 export default async function EvolutionPage({ params }) {
   const { id } = params;
   const species = await getEvolutions(id);
-
-
   const pokemonDetails = await getPokemonDetails(id);
   const mainType = pokemonDetails.types[0].type.name;
   const backgroundColor = typeColors[mainType] || 'bg-gray-500';
 
-  // Evrim serisini elde et
   const evolutionChainUrl = species.evolution_chain.url;
   const evolutionChainResponse = await fetch(evolutionChainUrl);
   const evolutionChain = await evolutionChainResponse.json();
 
-  // Tüm evrim zincirini render et
-  const evolutionCards = await renderFullEvolutionChain(evolutionChain.chain);
+  const evolutionCards = renderFullEvolutionChain(evolutionChain.chain);
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -119,14 +110,14 @@ export default async function EvolutionPage({ params }) {
       <section className="relative z-10 p-10 max-w-6xl mx-auto mt-52">
         <h1 className="text-4xl text-white font-bold text-center mb-10">Evrim Zinciri</h1>
         <div className="flex flex-wrap justify-center">
-          {evolutionCards.map((chain) => renderEvolutions(chain))}
+          {evolutionCards.map((chain) => renderEvolutions(chain, mainType))}
         </div>
-          <div className="text-center mt-10 space-y-4">
-            <div className={`bg-opacity-20 p-8 rounded-md backdrop-blur-md ${backgroundColor}`}>
-              <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokemonu Tanıyalım</h2>
-              <p className="text-gray-200">{species.flavor_text_entries[0].flavor_text}</p>
-            </div>
-            </div>
+        <div className="text-center mt-10 space-y-4">
+          <div className={`bg-opacity-20 p-8 rounded-md backdrop-blur-md ${backgroundColor}`}>
+            <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokemonu Tanıyalım</h2>
+            <p className="text-gray-200">{species.flavor_text_entries[0].flavor_text}</p>
+          </div>
+        </div>
         <div className="text-center mt-32">
           <Link href={`/pokemon/${id}`} className="inline-block px-6 py-3 btn">
             Pokémon'a Geri Dön

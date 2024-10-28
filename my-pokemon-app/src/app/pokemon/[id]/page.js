@@ -71,10 +71,9 @@ export default async function PokemonDetailPage({ params }) {
           <h1 className="text-4xl text-white capitalize tracking-wide">
             {pokemon.name} <span className="text-gray-400">#{pokemon.id.toString().padStart(3, '0')}</span>
           </h1>
-          <button className="inline-block px-6 py-3 btn">
-  <Link href={`/pokemon/${pokemon.id}/evolutions`}>Evrimleri Gör</Link>
-</button>
-
+          <Link href={`/pokemon/${pokemon.id}/evolutions`} className="inline-block px-6 py-3 btn">
+            Evrimleri Gör
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 rounded-lg">
