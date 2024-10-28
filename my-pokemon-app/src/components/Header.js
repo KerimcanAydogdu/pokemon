@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <header className="absolute top-0 left-0 w-full z-20">
-      <nav className="bg-black bg-opacity-20 p-10 flex justify-between items-center ">
+      <nav className="bg-black bg-opacity-20 p-6 flex justify-between items-center ">
         <div className="flex items-center md:m-auto">
           <Link href="/">
             <img src="/pokemon-logo.png" alt="Pokémon Logo" className='w-64 md:w-96' />
