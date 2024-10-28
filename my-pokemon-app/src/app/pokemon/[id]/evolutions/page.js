@@ -74,9 +74,9 @@ const renderEvolutions = async (chain) => {
 };
 
 const renderFullEvolutionChain = async (chain) => {
-  const evolutions = [chain]; // Başlangıç evrimi dizisi
+  const evolutions = [chain];
 
-  // Alt evrimleri ekle
+
   if (chain.evolves_to) {
     for (const evolution of chain.evolves_to) {
       evolutions.push(...await renderFullEvolutionChain(evolution)); // Rekürsif olarak alt evrimleri ekle
@@ -127,7 +127,6 @@ export default async function EvolutionPage({ params }) {
               <p className="text-gray-200">{species.flavor_text_entries[0].flavor_text}</p>
             </div>
             </div>
-        {/* Geri Dön Butonu */}
         <div className="text-center mt-32">
           <Link href={`/pokemon/${id}`} className="inline-block px-6 py-3 btn">
             Pokémon'a Geri Dön

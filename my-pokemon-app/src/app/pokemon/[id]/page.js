@@ -136,8 +136,6 @@ export default async function PokemonDetailPage({ params }) {
             </div>
           </div>
         </div>
-
-        {/* Geri Dön Butonu */}
         <div className="text-center mt-10">
           <Link href="/pokemon" className="inline-block px-6 py-3 btn">
             Listeye Geri Dön
