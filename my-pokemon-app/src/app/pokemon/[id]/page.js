@@ -13,12 +13,16 @@ async function getPokemonDetails(id) {
   return res.json();  
 }
 
-export async function generateStaticParams() {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon');
-  const data = await res.json();
-  const count = data.count;
-  const ids = Array.from({ length: count }, (_, i) => (i + 1).toString());
-  return ids.map((id) => ({ id }));
+async function getPokemonSpecies(id) {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    notFound();
+  }
+
+  return res.json();
 }
 
 const typeColors = {
@@ -45,7 +49,7 @@ const typeColors = {
 export default async function PokemonDetailPage({ params }) {
   const { id } = params;
   const pokemon = await getPokemonDetails(id);
-
+  const species = await getPokemonSpecies(id);
   const mainType = pokemon.types[0].type.name;
   const backgroundColor = typeColors[mainType] || 'bg-gray-500';
 
@@ -63,43 +67,77 @@ export default async function PokemonDetailPage({ params }) {
       </video>
 
       <section className="relative z-10 p-10 max-w-6xl mx-auto mt-52">
-        <div className="text-center mb-10">
-          <h1 className="text-6xl text-white capitalize tracking-wide">
-            {pokemon.name} <span className="text-gray-400">#{pokemon.id}</span>
+        <div className="flex items-center justify-between bg-white bg-opacity-20 p-4 rounded-md backdrop-blur-md">
+          <h1 className="text-4xl text-white capitalize tracking-wide">
+            {pokemon.name} <span className="text-gray-400">#{pokemon.id.toString().padStart(3, '0')}</span>
           </h1>
+          <button className="inline-block px-6 py-3 btn">
+  <Link href={`/pokemon/${pokemon.id}/evolutions`}>Evrimleri Gör</Link>
+</button>
+
         </div>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 ${backgroundColor} bg-opacity-55 backdrop-brightness-200 p-6 rounded-lg`}>
-          <img
-            src={pokemon.sprites.front_default}
-            alt={pokemon.name}
-            className="w-full h-auto object-contain bg-gray-200 bg-opacity-85 rounded-2xl shadow-md"
-          />
-
-          <div className="space-y-4 text-center lg:text-start">
-            <p className="text-gray-900 text-2xl">
-              <strong className="block text-gray-100">Yüksekliği:</strong> {pokemon.height / 10} m
-            </p>
-            <p className="text-gray-900 text-2xl">
-              <strong className="block text-gray-100">Ağırlığı:</strong> {pokemon.weight / 10} kg
-            </p>
-            <p className="text-gray-900 text-2xl">
-              <strong className="block text-gray-100">Yetenekleri:</strong> {pokemon.abilities.map(ability => ability.ability.name).join(', ')}
-            </p>
-            <div className="space-y-2">
-              <strong className="block text-gray-100 text-2xl">Türü:</strong>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 rounded-lg">
+          <div className="relative">
+            <div className={`rounded-full w-80 h-80 mx-auto flex items-center justify-center bg-opacity-60 ${backgroundColor}`}>
+              <img
+                src={pokemon.sprites.other["official-artwork"].front_default}
+                alt={pokemon.name}
+                className="w-56 h-56 object-contain"
+              />
+            </div>
+            <div className="flex gap-2 justify-center mt-5">
               {pokemon.types.map(type => (
                 <span
                   key={type.type.name}
-                  className={`inline-block mx-1 px-3 py-1 rounded-lg text-xl text-white ${typeColors[type.type.name] || 'bg-gray-500'}`}
+                  className={`inline-block px-2 py-1 rounded-lg text-white ${typeColors[type.type.name]}`}
                 >
                   {type.type.name}
                 </span>
               ))}
             </div>
+
+            <div className="space-y-1 mt-5">
+              {['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].map((stat, index) => (
+                <div key={index} className="flex items-center">
+                  <span className="text-gray-100 text-lg capitalize">{stat.replace('-', ' ')}</span>
+                  <div className="ml-4 w-72 bg-gray-300 rounded-full h-2 overflow-hidden">
+                    <div
+                      className="bg-pink-400 h-full"
+                      style={{ width: `${pokemon.stats[index].base_stat}%` }}
+                    ></div>
+                  </div>
+                  <span className="ml-2 text-gray-100">{pokemon.stats[index].base_stat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-10 space-y-4">
+            <div className={`bg-opacity-35 p-6 rounded-md backdrop-blur-md ${backgroundColor}`}>
+              <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokemonu Tanıyalım</h2>
+              <p className="text-gray-200">{species.flavor_text_entries[0].flavor_text}</p>
+            </div>
+
+            <div className={`bg-opacity-35 p-6 rounded-md backdrop-blur-md ${backgroundColor}`}>
+              <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Yetenekleri</h2>
+              <ul className="text-gray-200">
+                {pokemon.abilities.map((ability) => (
+                  <li key={ability.ability.name} className="capitalize">{ability.ability.name}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className={`bg-opacity-35 p-6 rounded-md backdrop-blur-md ${backgroundColor}`}>
+              <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Diğer Bilgiler</h2>
+              <p className="text-gray-200">Boyu: {pokemon.height / 10} m</p>
+              <p className="text-gray-200">Ağırlık: {pokemon.weight / 10} kg</p>
+              <p className="text-gray-200">Tecrübesi: {pokemon.base_experience}</p>
+            </div>
           </div>
         </div>
 
+        {/* Geri Dön Butonu */}
         <div className="text-center mt-10">
           <Link href="/pokemon" className="inline-block px-6 py-3 btn">
             Listeye Geri Dön

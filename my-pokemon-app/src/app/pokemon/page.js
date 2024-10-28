@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaPokeball} from "react-icons/fa";
 
 const ITEMS_PER_PAGE = 20;
 const MAX_POKEMON = 100;
@@ -42,10 +42,23 @@ async function getPokemonDetails(url) {
     throw new Error("Failed to fetch Pokémon details");
   }
   const data = await res.json();
+  const id = data.id; // Get the Pokémon ID
   return {
-    image: data.sprites.front_default,
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`, // Updated image URL
     types: data.types.map((t) => t.type.name),
   };
+}
+
+async function getPokemonSpecies(id) {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch Pokémon species data");
+  }
+
+  return res.json();
 }
 
 export default function PokemonPage({ searchParams }) {
@@ -157,30 +170,33 @@ export default function PokemonPage({ searchParams }) {
           )}
         </div>
 
-        {loading && <p>Yükleniyor...</p>}
-        {error && <p className="text-red-500">{error}</p>}
+        {loading && (
+  <div className="flex justify-center items-center h-full">
+    ...yükleniyor
+  </div>
+)}
 
         <ul className="grid grid-cols-2 gap-6 lg:grid-cols-5">
           {paginatedPokemon.map((pokemon, index) => (
             <li
               key={index}
-              className="relative  p-3 group hover:scale-105 transition-transform"
+              className="relative p-3 group hover:scale-105 transition-transform"
             >
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                 <div className="flex flex-col items-center justify-center">
                   <img
                     src={pokemon.image}
                     alt={pokemon.name}
-                    className="w-64 h-auto object-contain bg-gray-300  rounded-3xl shadow-md"
+                    className="w-56 h-auto object-contain bg-gray-300 rounded-3xl shadow-md"
                   />
-                  <span className="text-white font-bold text-lg mt-2 capitalize">
+                  <span className="text-white font-bold text-lg m-2 capitalize">
                     {pokemon.name}
                   </span>
-                  <div className="flex space-x-1 mt-1">
+                  <div className="flex space-x-2 mt-1">
                     {pokemon.types.map((type) => (
                       <span
                         key={type}
-                        className={`inline-block px-2 py-1 text-white rounded-lg ${
+                        className={`inline-block px-3 py-1 text-white rounded-lg ${
                           typeColors[type] || "bg-gray-500"
                         }`}
                       >
