@@ -1,7 +1,8 @@
 'use client';
+
 import Link from 'next/link';
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Header = () => {
@@ -16,7 +17,13 @@ const Header = () => {
       <nav className="bg-black bg-opacity-20 p-6 flex justify-between items-center ">
         <div className="flex items-center md:m-auto">
           <Link href="/">
-            <Image src="/pokemon-logo.png" alt="Pokémon Logo" className='w-64 md:w-96' />
+            <Image 
+              src="/pokemon-logo.png" 
+              alt="Pokémon Logo" 
+              width={384} // Or any appropriate width
+              height={96} // Or any appropriate height
+              className='w-64 md:w-96' 
+            />
           </Link>
         </div>
 
@@ -34,7 +41,7 @@ const Header = () => {
 
         <button
           onClick={toggleMenu}
-          className="md:hidden text-white  z-30"
+          className="md:hidden text-white z-30"
         >
           {isMenuOpen ? <FaTimes size={28} /> : <FaBars size={24} />}
         </button>
@@ -65,7 +72,12 @@ const Header = () => {
           </ul>
           <div className="mt-8">
             <Link href="/" onClick={() => setIsMenuOpen(false)}>
-              <Image src="/pokemon-logo.png" alt="Pokémon Logo" width={125} height={50} />
+              <Image 
+                src="/pokemon-logo.png" 
+                alt="Pokémon Logo" 
+                width={125} 
+                height={50} 
+              />
             </Link>
           </div>
         </div>

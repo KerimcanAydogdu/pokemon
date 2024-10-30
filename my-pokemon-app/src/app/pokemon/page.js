@@ -1,5 +1,5 @@
 "use client";
-import Image from 'next/image';
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight, FaPokeball} from "react-icons/fa";
@@ -184,7 +184,7 @@ export default function PokemonPage({ searchParams }) {
             >
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                 <div className="flex flex-col items-center justify-center">
-                  <Image
+                  <img
                     src={pokemon.image}
                     alt={pokemon.name}
                     className="w-56 h-auto object-contain bg-gray-300 rounded-3xl shadow-md"
