@@ -184,7 +184,7 @@ export default function PokemonPage({ searchParams }) {
             >
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                 <div className="flex flex-col items-center justify-center">
-                  <img
+                  <Image
                     src={pokemon.image}
                     alt={pokemon.name}
                     className="w-56 h-auto object-contain bg-gray-300 rounded-3xl shadow-md"

@@ -79,7 +79,7 @@ export default async function PokemonDetailPage({ params }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 rounded-lg">
           <div className="relative">
             <div className={`rounded-full w-80 h-80 mx-auto flex items-center justify-center bg-opacity-60 ${backgroundColor}`}>
-              <img
+              <Image
                 src={pokemon.sprites.other["official-artwork"].front_default}
                 alt={pokemon.name}
                 className="w-56 h-56 object-contain"

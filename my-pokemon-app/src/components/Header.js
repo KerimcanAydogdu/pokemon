@@ -15,7 +15,7 @@ const Header = () => {
       <nav className="bg-black bg-opacity-20 p-6 flex justify-between items-center ">
         <div className="flex items-center md:m-auto">
           <Link href="/">
-            <img src="/pokemon-logo.png" alt="Pokémon Logo" className='w-64 md:w-96' />
+            <Image src="/pokemon-logo.png" alt="Pokémon Logo" className='w-64 md:w-96' />
           </Link>
         </div>
 
@@ -64,7 +64,7 @@ const Header = () => {
           </ul>
           <div className="mt-8">
             <Link href="/" onClick={() => setIsMenuOpen(false)}>
-              <img src="/pokemon-logo.png" alt="Pokémon Logo" width={125} height={50} />
+              <Image src="/pokemon-logo.png" alt="Pokémon Logo" width={125} height={50} />
             </Link>
           </div>
         </div>

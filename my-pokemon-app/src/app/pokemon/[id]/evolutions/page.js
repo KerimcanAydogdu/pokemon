@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 const typeColors = {
@@ -59,9 +60,11 @@ const renderEvolutions = (chain, mainType) => {
         {chain.species.name}
       </h2>
       <Link href={`/pokemon/${pokemonId}`}>
-        <img
+        <Image
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`}
           alt={chain.species.name}
+          width={160}
+          height={160}
           className="w-40 h-40 object-contain"
         />
       </Link>
@@ -120,7 +123,7 @@ export default async function EvolutionPage({ params }) {
         </div>
         <div className="text-center mt-32">
           <Link href={`/pokemon/${id}`} className="inline-block px-6 py-3 btn">
-            Pokémon'a Geri Dön
+            Pokémon&apos;a Geri Dön
           </Link>
         </div>
       </section>
