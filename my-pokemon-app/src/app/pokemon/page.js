@@ -130,6 +130,7 @@ export default function PokemonPage({ searchParams }) {
     "flying",
     "normal",
     "fairy",
+    "dragon",
   ];
 
   return (
