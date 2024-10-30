@@ -211,39 +211,39 @@ export default function PokemonPage({ searchParams }) {
           ))}
         </ul>
 
-        <div className="mt-14 flex justify-center items-center space-x-4">
-          {page > 1 && (
-            <Link
-              href={`/pokemon?page=${page - 1}`}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
-            >
-              <FaChevronLeft className="mr-2" />
-            </Link>
-          )}
-          <div className="flex space-x-2">
-            {pageNumbers.map((num) => (
-              <Link key={num} href={`/pokemon?page=${num}`}>
-                <span
-                  className={`px-4 py-2 rounded-lg ${
-                    num === page
-                      ? "bg-red-600 text-white"
-                      : "bg-red-400 hover:bg-red-500"
-                  } transition-colors`}
-                >
-                  {num}
-                </span>
-              </Link>
-            ))}
-          </div>
-          {page < TOTAL_PAGES && (
-            <Link
-              href={`/pokemon?page=${page + 1}`}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
-            >
-              <FaChevronRight className="ml-2" />
-            </Link>
-          )}
-        </div>
+        <div className="mt-14 flex justify-center items-center flex-wrap space-x-4">
+  {page > 1 && (
+    <Link
+      href={`/pokemon?page=${page - 1}`}
+      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
+    >
+      <FaChevronLeft className="mr-2" />
+    </Link>
+  )}
+  <div className="flex flex-wrap justify-center gap-2">
+    {pageNumbers.map((num) => (
+      <Link key={num} href={`/pokemon?page=${num}`}>
+        <span
+          className={`px-4 py-2 rounded-lg ${
+            num === page
+              ? "bg-red-600 text-white"
+              : "bg-red-400 hover:bg-red-500"
+          } transition-colors`}
+        >
+          {num}
+        </span>
+      </Link>
+    ))}
+  </div>
+  {page < TOTAL_PAGES && (
+    <Link
+      href={`/pokemon?page=${page + 1}`}
+      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
+    >
+      <FaChevronRight className="ml-2" />
+    </Link>
+  )}
+</div>
       </section>
     </div>
   );
