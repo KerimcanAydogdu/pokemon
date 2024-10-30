@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image';
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaChevronLeft, FaChevronRight, FaPokeball} from "react-icons/fa";
