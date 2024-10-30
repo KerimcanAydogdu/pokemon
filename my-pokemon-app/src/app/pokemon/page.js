@@ -29,7 +29,7 @@ const typeColors = {
 };
 
 async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }
