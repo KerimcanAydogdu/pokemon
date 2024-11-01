@@ -128,7 +128,7 @@ export default async function EvolutionPage({ params }) {
         </div>
         <div className="text-center mt-10 space-y-4">
           <div className={`bg-opacity-20 p-8 rounded-md backdrop-blur-md ${backgroundColor}`}>
-            <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokémon'u Tanıyalım</h2>
+            <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokémon&apos;u Tanıyalım</h2>
             <p className="text-gray-200">{species.flavor_text_entries[0].flavor_text}</p>
           </div>
         </div>
