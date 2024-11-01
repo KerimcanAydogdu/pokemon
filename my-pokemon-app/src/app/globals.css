@@ -32,7 +32,7 @@ body {
   }
   @layer utilities {
     .btn {
-        @apply bg-gradient-to-tr from-blue-600 to-yellow-300  rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-2xl text-white;
+        @apply bg-gradient-to-br from-blue-600 to-yellow-300  rounded-full hover:scale-105 transition-transform shadow-lg hover:shadow-xl text-white;
     }
 }
 @layer components {
@@ -43,4 +43,25 @@ body {
     -ms-overflow-style: none;  /* Internet Explorer için */
     scrollbar-width: none;  /* Firefox için */
   }
+}
+
+.select-dropdown {
+  appearance: none; /* Tarayıcı varsayılan stilini kaldır */
+  background-color: #4b5563; /* Arka plan rengi */
+  color: white; /* Yazı rengi */
+  padding: 12px 24px; /* İç boşluk */
+  border: 2px solid #fbbf24; /* Kenar rengi */
+  border-radius: 8px; /* Kenar yuvarlama */
+  cursor: pointer; /* İmleci göster */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Geçiş efekti */
+}
+
+.select-dropdown:hover {
+  background-color: #fbbf24; /* Hover rengi */
+  border-color: #4b5563; /* Hover kenar rengi */
+}
+
+.select-dropdown:focus {
+  outline: none; /* Odaklandığında kenar çizgisini kaldır */
+  border-color: #fbbf24; /* Odaklandığında kenar rengi */
 }

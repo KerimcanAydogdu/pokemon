@@ -1,5 +1,15 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+
+export async function generateMetadata({ params }) {
+  const { id } = params;
+  const pokemon = await getPokemonDetails(id);
+
+  return {
+    title: `${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}`,
+  };
+}
 
 async function getPokemonDetails(id) {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
@@ -24,6 +34,27 @@ async function getPokemonSpecies(id) {
 
   return res.json();
 }
+
+const typeImages = {
+  grass: "/grass.png",
+  poison: "/poison.png",
+  fire: "/fire.png",
+  water: "/water.png",
+  flying: "/flying.png",
+  bug: "/bug.png",
+  normal: "/normal.png",
+  electric: "/electric.png",
+  ground: "/ground.png",
+  fairy: "/fairy.png",
+  fighting: "/fighting.png",
+  psychic: "/psychic.png",
+  rock: "/rock.png",
+  ghost: "/ghost.png",
+  ice: "/ice.png",
+  dragon: "/dragon.png",
+  steel: "/steel.png",
+  dark: "/dark.png",
+};
 
 const typeColors = {
   grass: 'bg-green-500',
@@ -55,54 +86,55 @@ export default async function PokemonDetailPage({ params }) {
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0 brightness-50"
-      >
-        <source src="/pokeball.mp4" type="video/mp4" />
-        Tarayıcınız bu videoyu desteklemiyor.
-      </video>
+      <Image src="/a.jpeg" alt="Pokémon Logo" 
+      width={1000}
+      height={96} 
+      className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm " />
 
-      <section className="relative z-10 p-10 max-w-6xl mx-auto mt-52">
-        <div className="flex items-center justify-between bg-white bg-opacity-20 p-4 rounded-md backdrop-blur-md">
+      <section className="relative z-10 p-10 max-w-7xl mx-auto mt-52">
+        <div className="flex items-center justify-between bg-white bg-opacity-30 p-4 rounded-md backdrop-blur-md">
           <h1 className="text-4xl text-white capitalize tracking-wide">
-            {pokemon.name} <span className="text-gray-400">#{pokemon.id.toString().padStart(3, '0')}</span>
+            {pokemon.name} <span className="text-gray-800">#{pokemon.id.toString().padStart(3, '0')}</span>
           </h1>
-          <Link href={`/pokemon/${pokemon.id}/evolutions`} className="inline-block px-6 py-3 btn">
+          <Link href={`/pokemon/${pokemon.id}/evolutions`} className="inline-block px-6 py-3 btn text-center">
             Evrimleri Gör
           </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 rounded-lg">
           <div className="relative">
-            <div className={`rounded-full w-80 h-80 mx-auto flex items-center justify-center bg-opacity-60 ${backgroundColor}`}>
+            <div className={`rounded-full w-80 h-80 xl:w-96 xl:h-96 mx-auto flex items-center justify-center bg-opacity-60 ${backgroundColor}`}>
               <img
                 src={pokemon.sprites.other["official-artwork"].front_default}
                 alt={pokemon.name}
-                className="w-56 h-56 object-contain"
+                className="w-60 h-60 object-contain"
               />
             </div>
             <div className="flex gap-2 justify-center mt-5">
               {pokemon.types.map(type => (
-                <span
-                  key={type.type.name}
-                  className={`inline-block px-2 py-1 rounded-lg text-white ${typeColors[type.type.name]}`}
-                >
-                  {type.type.name}
-                </span>
+                <div key={type.type.name} className="flex flex-col items-center">
+                  <Image 
+                    src={typeImages[type.type.name] || "/default.png"} 
+                    alt={type.type.name} 
+                    width={50} 
+                    height={50} 
+                  />
+                  <span
+                    className={`inline-block px-3 py-2 text-xl font-bold rounded-lg text-white`}
+                  >
+                    {type.type.name}
+                  </span>
+                </div>
               ))}
             </div>
 
             <div className="space-y-1 mt-5">
               {['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].map((stat, index) => (
                 <div key={index} className="flex items-center">
-                  <span className="text-gray-100 text-lg capitalize">{stat.replace('-', ' ')}</span>
-                  <div className="ml-4 w-72 bg-gray-300 rounded-full h-2 overflow-hidden">
+                  <span className="text-gray-100 text-lg capitalize w-16 ">{stat.replace('-', ' ')}</span>
+                  <div className="ml-4 w-72 bg-gray-300 rounded-full h-3 overflow-hidden">
                     <div
-                      className="bg-pink-400 h-full"
+                      className="h-3 bg-pink-500"
                       style={{ width: `${pokemon.stats[index].base_stat}%` }}
                     ></div>
                   </div>
@@ -112,13 +144,13 @@ export default async function PokemonDetailPage({ params }) {
             </div>
           </div>
 
-          <div className="text-center mt-10 space-y-4">
-            <div className={`bg-opacity-35 p-6 rounded-md backdrop-blur-md ${backgroundColor}`}>
-              <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokemonu Tanıyalım</h2>
-              <p className="text-gray-200">{species.flavor_text_entries[0].flavor_text}</p>
+          <div className="text-center mt-10 space-y-5">
+            <div className={`bg-opacity-35 p-6 xl:p-10 rounded-md backdrop-blur-md ${backgroundColor}`}>
+              <h2 className="text-2xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Pokemonu Tanıyalım</h2>
+              <p className="text-gray-200 text-start">{species.flavor_text_entries[0].flavor_text}</p>
             </div>
 
-            <div className={`bg-opacity-35 p-6 rounded-md backdrop-blur-md ${backgroundColor}`}>
+            <div className={`bg-opacity-35 p-6 xl:p-10 rounded-md backdrop-blur-md ${backgroundColor}`}>
               <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Yetenekleri</h2>
               <ul className="text-gray-200">
                 {pokemon.abilities.map((ability) => (
@@ -127,7 +159,7 @@ export default async function PokemonDetailPage({ params }) {
               </ul>
             </div>
 
-            <div className={`bg-opacity-35 p-6 rounded-md backdrop-blur-md ${backgroundColor}`}>
+            <div className={`bg-opacity-35 p-6 xl:p-10 rounded-md backdrop-blur-md ${backgroundColor}`}>
               <h2 className="text-xl font-bold mb-5 bg-opacity-40 p-1 bg-black rounded-full text-white">Diğer Bilgiler</h2>
               <p className="text-gray-200">Boyu: {pokemon.height / 10} m</p>
               <p className="text-gray-200">Ağırlık: {pokemon.weight / 10} kg</p>

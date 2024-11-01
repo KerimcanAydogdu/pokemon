@@ -13,28 +13,29 @@ const Header = () => {
   };
 
   return (
-    <header className="absolute top-0 left-0 w-full z-20">
-      <nav className="bg-black bg-opacity-20 p-6 flex justify-between items-center ">
-        <div className="flex items-center md:m-auto">
+    <header className="absolute w-full z-20">
+      <nav className="p-6 flex justify-between md:justify-center space-x-36 md:space-x-96 items-center">
+
+        <div className="flex items-center">
           <Link href="/">
             <Image 
               src="/pokemon-logo.png" 
               alt="Pokémon Logo" 
-              width={384} // Or any appropriate width
-              height={96} // Or any appropriate height
-              className='w-64 md:w-96' 
+              width={1000}
+              height={96} 
+              className="w-48 md:w-80 mr-40"
             />
           </Link>
         </div>
 
-        <div className="hidden md:flex space-x-6 text-2xl text-rose-100 font-bold m-auto">
-          <Link href="/" className="hover:underline">
+        <div className="hidden md:flex space-x-8 text-2xl font-semibold text-white tracking-wider">
+          <Link href="/" className="hover:text-yellow-300 transition-colors">
             Anasayfa
           </Link>
-          <Link href="/pokemon?page=1" className="hover:underline">
+          <Link href="/pokemon?page=1" className="hover:text-yellow-300 transition-colors">
             Pokémonlar
           </Link>
-          <Link href="#contact" className="hover:underline">
+          <Link href="#contact" className="hover:text-yellow-300 transition-colors">
             İletişim
           </Link>
         </div>
@@ -47,36 +48,43 @@ const Header = () => {
         </button>
       </nav>
 
+  
       <div
-        className={`md:hidden fixed inset-0 z-20 transition-transform duration-300 ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        } backdrop-blur-sm`}
+        className={`fixed inset-0 z-10 bg-black bg-opacity-50 transition-opacity ${
+          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={() => setIsMenuOpen(false)}
       >
-        <div className="absolute right-0 w-2/4 max-w-xs bg-red-900 p-8 h-full shadow-lg">
-          <ul className="flex flex-col space-y-4 mt-36 text-xl text-white">
+        <div
+          className={`fixed top-0 right-0 w-3/4 max-w-xs bg-gradient-to-br from-red-700 to-red-900 h-full shadow-lg p-8 transform transition-transform duration-300 ${
+            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <ul className="flex flex-col space-y-6 text-lg text-white mt-20">
             <li>
-              <Link href="/" onClick={() => setIsMenuOpen(false)} className="hover:bg-red-700 p-2 rounded-md transition-colors">
+              <Link href="/" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
                 Anasayfa
               </Link>
             </li>
             <li>
-              <Link href="/pokemon?page=1" onClick={() => setIsMenuOpen(false)} className="hover:bg-red-700 p-2 rounded-md transition-colors">
+              <Link href="/pokemon?page=1" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
                 Pokémonlar
               </Link>
             </li>
             <li>
-              <Link href="#contact" onClick={() => setIsMenuOpen(false)} className="hover:bg-red-700 p-2 rounded-md transition-colors">
+              <Link href="#contact" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
                 İletişim
               </Link>
             </li>
           </ul>
-          <div className="mt-8">
+          <div className="mt-auto flex justify-center">
             <Link href="/" onClick={() => setIsMenuOpen(false)}>
               <Image 
                 src="/pokemon-logo.png" 
                 alt="Pokémon Logo" 
-                width={125} 
+                width={120} 
                 height={50} 
+                className="mt-8"
               />
             </Link>
           </div>

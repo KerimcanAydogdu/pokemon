@@ -2,34 +2,34 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight, FaPokeball} from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Image from "next/image";
 
-const ITEMS_PER_PAGE = 20;
-const MAX_POKEMON = 100;
+const ITEMS_PER_PAGE = 24;
 
-const typeColors = {
-  grass: "bg-green-500",
-  poison: "bg-purple-500",
-  fire: "bg-red-500",
-  water: "bg-blue-500",
-  flying: "bg-blue-200",
-  bug: "bg-lime-500",
-  normal: "bg-gray-400",
-  electric: "bg-yellow-500",
-  ground: "bg-yellow-700",
-  fairy: "bg-pink-500",
-  fighting: "bg-red-700",
-  psychic: "bg-pink-600",
-  rock: "bg-yellow-600",
-  ghost: "bg-purple-700",
-  ice: "bg-blue-300",
-  dragon: "bg-indigo-700",
-  steel: "bg-gray-500",
-  dark: "bg-gray-700",
+const typeImages = {
+  grass: "/grass.png",
+  poison: "/poison.png",
+  fire: "/fire.png",
+  water: "/water.png",
+  flying: "/flying.png",
+  bug: "/bug.png",
+  normal: "/normal.png",
+  electric: "/electric.png",
+  ground: "/ground.png",
+  fairy: "/fairy.png",
+  fighting: "/fighting.png",
+  psychic: "/psychic.png",
+  rock: "/rock.png",
+  ghost: "/ghost.png",
+  ice: "/ice.png",
+  dragon: "/dragon.png",
+  steel: "/steel.png",
+  dark: "/dark.png",
 };
 
 async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=120`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }
@@ -42,39 +42,25 @@ async function getPokemonDetails(url) {
     throw new Error("Failed to fetch Pokémon details");
   }
   const data = await res.json();
-  const id = data.id; // Get the Pokémon ID
+  const id = data.id;
   return {
-    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`, // Updated image URL
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
     types: data.types.map((t) => t.type.name),
   };
-}
-
-async function getPokemonSpecies(id) {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
-    cache: 'force-cache',
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch Pokémon species data");
-  }
-
-  return res.json();
 }
 
 export default function PokemonPage({ searchParams }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const page = parseInt(searchParams.page || "1", 10);
   const offset = (page - 1) * ITEMS_PER_PAGE;
 
   useEffect(() => {
     const fetchData = async () => {
-      setError(null);
       setLoading(true);
       try {
         const data = await getAllPokemon();
@@ -87,121 +73,82 @@ export default function PokemonPage({ searchParams }) {
         setPokemonList(pokemonDetails);
         setFilteredPokemon(pokemonDetails);
       } catch (err) {
-        setError("Veri alımı sırasında bir hata oluştu.");
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [searchParams.page]);
 
-  const handleFilterChange = (type) => {
-    setSelectedType(type);
-    if (type === "Tümü") {
-      setFilteredPokemon(pokemonList);
-    } else {
-      const filtered = pokemonList.filter((pokemon) =>
-        pokemon.types.includes(type)
-      );
-      setFilteredPokemon(filtered);
-    }
-    setIsOpen(false);
-  };
+  useEffect(() => {
+    const filtered = pokemonList.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ).filter((pokemon) => 
+      selectedType ? pokemon.types.includes(selectedType) : true
+    );
+    setFilteredPokemon(filtered);
+  }, [searchTerm, selectedType, pokemonList]);
 
   const TOTAL_PAGES = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
-  const paginatedPokemon = filteredPokemon.slice(
-    offset,
-    offset + ITEMS_PER_PAGE
-  );
-
+  const paginatedPokemon = filteredPokemon.slice(offset, offset + ITEMS_PER_PAGE);
   const pageNumbers = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
-  const options = [
-    "Tümü",
-    "fire",
-    "water",
-    "grass",
-    "electric",
-    "poison",
-    "bug",
-    "flying",
-    "normal",
-    "fairy",
-  ];
-
   return (
-    <div className="relative w-full h-full overflow-hidden min-h-screen">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0 brightness-50"
-      >
-        <source src="/pokeballl.mp4" type="video/mp4" />
-        Tarayıcınız bu videoyu desteklemiyor.
-      </video>
+    <div className="relative overflow-hidden">
+      <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
       <section className="relative z-10 p-10 md:p-28 text-center text-white mt-52 md:mt-32">
-        <div className="mb-20 relative w-80 md:w-96 mx-auto">
-          <button
-            onClick={toggleDropdown}
-            className="w-full h-full px-8 py-2 bg-gray-300 text-gray-900 rounded-full flex justify-between items-center"
+        <div className="flex mb-20 relative  w-full md:w-3/6 lg:w-2/6 mx-auto space-x-1">
+          <input
+            type="text"
+            placeholder="Ara..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-5 py-2 text-lg bg-zinc-400 text-black rounded-full shadow-2xl focus:outline-none placeholder:text-black "
+          />
+          <select
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+            className="px-5 py-2 bg-zinc-400 text-gray-100 rounded-full shadow-2xl border-spacing-6 appearance-none cursor-pointer focus:outline-none"
           >
-            <span>{selectedType || "Tür Filtrele"}</span>
-            <span className="m-1">{isOpen ? "▲" : "▼"}</span>
-          </button>
-
-          {isOpen && (
-            <ul className="absolute w-full bg-gray-300 rounded-2xl mt-1 max-h-60 overflow-auto custom-scrollbar z-10">
-              {options.map((option, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleFilterChange(option)}
-                  className="p-2 text-gray-700 hover:bg-gray-500 hover:text-white rounded-xl cursor-pointer transition-colors"
-                >
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </li>
-              ))}
-            </ul>
-          )}
+            <option value="">Tür Filtrele</option>
+            {["fire", "water", "grass", "electric", "poison", "flying", "bug", "ghost", "normal", "ground", "ice", "rock", "psychic", "fighting", "fairy"].map((type) => (
+              <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+            ))}
+          </select>
         </div>
 
         {loading && (
-  <div className="flex justify-center items-center h-full">
-    ...yükleniyor
-  </div>
-)}
+          <div className="flex justify-center items-center h-screen">
+            <img 
+              src="/loader.gif" 
+              alt="Yükleniyor..." 
+              className="w-40 h-40" 
+            />
+          </div>
+        )}
 
-        <ul className="grid grid-cols-2 gap-6 lg:grid-cols-5">
+        {filteredPokemon.length === 0 && !loading && (
+          <div className="flex flex-col items-center">
+            <p className="text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
+          </div>
+        )}
+
+        <ul className="grid grid-cols-2 2xl:grid-cols-6 lg:grid-cols-4 md:grid-col-2 gap-10">
           {paginatedPokemon.map((pokemon, index) => (
-            <li
-              key={index}
-              className="relative p-3 group hover:scale-105 transition-transform"
-            >
+            <li key={index} className="relative hover:scale-105 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                <div className="flex flex-col items-center justify-center">
-                  <img
-                    src={pokemon.image}
-                    alt={pokemon.name}
-                    className="w-56 h-auto object-contain bg-gray-300 rounded-3xl shadow-md"
-                  />
-                  <span className="text-white font-bold text-lg m-2 capitalize">
-                    {pokemon.name}
-                  </span>
-                  <div className="flex space-x-2 mt-1">
+                <div className="flex flex-col items-center justify-center bg-zinc-500 bg-opacity-65 rounded-3xl shadow-2xl">
+                  <span className="text-white font-bold text-2xl mt-8 capitalize">{pokemon.name}</span>
+                  <img src={pokemon.image} alt={pokemon.name} className="w-52 mt-2 object-contain" />
+                  <div className="flex space-x-4 m-4 items-center">
                     {pokemon.types.map((type) => (
-                      <span
-                        key={type}
-                        className={`inline-block px-3 py-1 text-white rounded-lg ${
-                          typeColors[type] || "bg-gray-500"
-                        }`}
-                      >
-                        {type}
-                      </span>
+                      <div key={type} className="flex flex-col items-center">
+                        <Image src={typeImages[type] || "/default.png"} alt={type} width={40} height={40} />
+                        <span className="text-white text-lg font-bold capitalize mt-1">{type}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -211,37 +158,15 @@ export default function PokemonPage({ searchParams }) {
         </ul>
 
         <div className="mt-14 flex justify-center items-center space-x-4">
-          {page > 1 && (
-            <Link
-              href={`/pokemon?page=${page - 1}`}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
-            >
-              <FaChevronLeft className="mr-2" />
-            </Link>
-          )}
+          {page > 1 && <Link href={`/pokemon?page=${page - 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronLeft className="mr-2" /></Link>}
           <div className="flex space-x-2">
             {pageNumbers.map((num) => (
               <Link key={num} href={`/pokemon?page=${num}`}>
-                <span
-                  className={`px-4 py-2 rounded-lg ${
-                    num === page
-                      ? "bg-red-600 text-white"
-                      : "bg-red-400 hover:bg-red-500"
-                  } transition-colors`}
-                >
-                  {num}
-                </span>
+                <span className={`px-4 py-2 rounded-lg ${num === page ? "bg-red-600 text-white" : "bg-red-400 hover:bg-red-500"} transition-colors`}>{num}</span>
               </Link>
             ))}
           </div>
-          {page < TOTAL_PAGES && (
-            <Link
-              href={`/pokemon?page=${page + 1}`}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
-            >
-              <FaChevronRight className="ml-2" />
-            </Link>
-          )}
+          {page < TOTAL_PAGES && <Link href={`/pokemon?page=${page + 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronRight className="ml-2" /></Link>}
         </div>
       </section>
     </div>
