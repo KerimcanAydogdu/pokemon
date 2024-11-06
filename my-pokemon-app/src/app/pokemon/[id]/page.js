@@ -131,14 +131,14 @@ export default async function PokemonDetailPage({ params }) {
             <div className="space-y-1 mt-5">
               {['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].map((stat, index) => (
                 <div key={index} className="flex items-center">
-                  <span className="text-gray-100 text-lg capitalize w-16 ">{stat.replace('-', ' ')}</span>
-                  <div className="ml-4 w-72 bg-gray-300 rounded-full h-3 overflow-hidden">
+                  <span className="text-gray-100 text-lg capitalize w-36 ">{stat.replace('-',' ')}</span>
+                  <div className="w-60 bg-gray-300 rounded-full h-3 overflow-hidden">
                     <div
                       className="h-3 bg-pink-500"
                       style={{ width: `${pokemon.stats[index].base_stat}%` }}
                     ></div>
                   </div>
-                  <span className="ml-2 text-gray-100">{pokemon.stats[index].base_stat}</span>
+                  <span className="ml-5 text-gray-100">{pokemon.stats[index].base_stat}</span>
                 </div>
               ))}
             </div>

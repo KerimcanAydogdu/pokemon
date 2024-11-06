@@ -54,7 +54,7 @@ const renderEvolutions = (chain, mainType, types) => {
   return (
     <div
       key={chain.species.name}
-      className={`${backgroundColor} bg-opacity-40 rounded-2xl shadow-lg p-10 xl:p-14 md:p-12 flex flex-col items-center text-gray-300 transition-transform duration-200 hover:scale-105 m-8`}
+      className={`${backgroundColor} bg-opacity-45 rounded-2xl shadow-lg p-10 xl:p-14 md:p-12 flex flex-col items-center text-gray-300 transition-transform duration-200 hover:scale-105 m-8`}
     >
       <h2 className="text-xl font-bold mb-2 text-center capitalize">
         {chain.species.name}

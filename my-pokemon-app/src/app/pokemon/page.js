@@ -96,25 +96,25 @@ export default function PokemonPage({ searchParams }) {
   const pageNumbers = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative pt-12 overflow-hidden">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
-      <section className="relative z-10 p-10 md:p-28 text-center text-white mt-52 md:mt-32">
-        <div className="flex mb-20 relative  w-full md:w-3/6 lg:w-2/6 mx-auto space-x-1">
+      <section className="relative p-10 z-10 pb-3 md:p-28 text-center text-white mt-52 md:mt-32">
+        <div className="flex mb-24 relative  w-full md:w-3/6 lg:w-2/6 mx-auto space-x-1">
           <input
             type="text"
-            placeholder="Ara..."
+            placeholder="Bir Pokemon Ara..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-5 py-2 text-lg bg-zinc-400 text-black rounded-full shadow-2xl focus:outline-none placeholder:text-black "
+            className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600 "
           />
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="px-5 py-2 bg-zinc-400 text-gray-100 rounded-full shadow-2xl border-spacing-6 appearance-none cursor-pointer focus:outline-none"
+            className="px-6 py-2 bg-zinc-400 text-zinc-700 text-lg rounded-full shadow-2xl appearance-none cursor-pointer focus:outline-none"
           >
             <option value="">Tür Filtrele</option>
-            {["fire", "water", "grass", "electric", "poison", "flying", "bug", "ghost", "normal", "ground", "ice", "rock", "psychic", "fighting", "fairy"].map((type) => (
+            {["fire", "water", "grass", "electric", "poison", "flying", "bug", "ghost", "normal", "dark" , "ground", "ice", "rock", "psychic", "fighting", "fairy"].map((type) => (
               <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
             ))}
           </select>
@@ -140,8 +140,8 @@ export default function PokemonPage({ searchParams }) {
           {paginatedPokemon.map((pokemon, index) => (
             <li key={index} className="relative hover:scale-105 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                <div className="flex flex-col items-center justify-center bg-zinc-500 bg-opacity-65 rounded-3xl shadow-2xl">
-                  <span className="text-white font-bold text-2xl mt-8 capitalize">{pokemon.name}</span>
+                <div className="flex flex-col items-center justify-center bg-gradient-to-tr from-zinc-600 rounded-3xl shadow-2xl">
+                  <span className="text-white bg-zinc-800 w-4/6 rounded-full bg-opacity-35 font-bold text-2xl mt-8 capitalize">{pokemon.name}</span>
                   <img src={pokemon.image} alt={pokemon.name} className="w-52 mt-2 object-contain" />
                   <div className="flex space-x-4 m-4 items-center">
                     {pokemon.types.map((type) => (
