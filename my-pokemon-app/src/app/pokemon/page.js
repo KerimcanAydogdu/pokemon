@@ -138,11 +138,11 @@ export default function PokemonPage({ searchParams }) {
 
         <ul className="grid grid-cols-2 2xl:grid-cols-6 lg:grid-cols-4 md:grid-col-2 gap-10">
           {paginatedPokemon.map((pokemon, index) => (
-            <li key={index} className="relative hover:scale-105 transition-transform">
+            <li key={index} className="relative shadow-xl hover:scale-105 active:scale-95 rounded-3xl from-slate-50 active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                 <div className="flex flex-col items-center justify-center bg-gradient-to-tr from-zinc-600 rounded-3xl shadow-2xl">
-                  <span className="text-white bg-zinc-800 w-4/6 rounded-full bg-opacity-35 font-bold text-2xl mt-8 capitalize">{pokemon.name}</span>
-                  <img src={pokemon.image} alt={pokemon.name} className="w-52 mt-2 object-contain" />
+                  <span className="text-white bg-zinc-800 w-36 rounded-full bg-opacity-35 font-bold text-2xl mt-8 capitalize">{pokemon.name}</span>
+                  <img src={pokemon.image} alt={pokemon.name} className="w-44 mt-2 object-contain" />
                   <div className="flex space-x-4 m-4 items-center">
                     {pokemon.types.map((type) => (
                       <div key={type} className="flex flex-col items-center">
