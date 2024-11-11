@@ -29,7 +29,7 @@ const typeImages = {
 };
 
 async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=120`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=120`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }
@@ -105,8 +105,7 @@ export default function PokemonPage({ searchParams }) {
       selectedType ? pokemon.types.includes(selectedType) : true
     );
     setFilteredPokemon(filtered);
-}, [searchTerm, selectedType, pokemonList]);
-
+  }, [searchTerm, selectedType, pokemonList]);
 
   const TOTAL_PAGES = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
   const paginatedPokemon = filteredPokemon.slice(offset, offset + ITEMS_PER_PAGE);
@@ -131,7 +130,7 @@ export default function PokemonPage({ searchParams }) {
             className="px-6 py-2 bg-zinc-400 text-zinc-700 text-lg rounded-full shadow-2xl appearance-none cursor-pointer focus:outline-none"
           >
             <option value="">Tür Filtrele</option>
-            {["fire", "water", "grass", "electric", "poison", "flying", "bug", "ghost", "normal", "dark" , "ground", "ice", "rock", "psychic", "fighting", "fairy"].map((type) => (
+            {["fire", "water", "grass", "electric", "poison", "flying", "bug", "ghost", "normal", "dark", "ground", "ice", "rock", "psychic", "fighting", "fairy"].map((type) => (
               <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
             ))}
           </select>
@@ -185,6 +184,7 @@ export default function PokemonPage({ searchParams }) {
           </div>
           {page < TOTAL_PAGES && <Link href={`/pokemon?page=${page + 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronRight className="ml-2" /></Link>}
         </div>
+
       </section>
     </div>
   );

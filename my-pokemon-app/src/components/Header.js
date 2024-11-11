@@ -35,8 +35,8 @@ const Header = () => {
           <Link href="/pokemon?page=1" className="hover:text-yellow-300 transition-colors">
             Pokémonlar
           </Link>
-          <Link href="#contact" className="hover:text-yellow-300 transition-colors">
-            İletişim
+          <Link href="/power" className="hover:text-yellow-300 transition-colors">
+        Güç Sıralması
           </Link>
         </div>
 
@@ -71,8 +71,8 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="#contact" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
-                İletişim
+              <Link href="/sıralama" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
+                Sıralama
               </Link>
             </li>
           </ul>
