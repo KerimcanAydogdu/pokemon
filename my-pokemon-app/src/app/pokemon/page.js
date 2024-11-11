@@ -83,13 +83,30 @@ export default function PokemonPage({ searchParams }) {
   }, [searchParams.page]);
 
   useEffect(() => {
-    const filtered = pokemonList.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).filter((pokemon) => 
+    const filtered = pokemonList.filter((pokemon) => {
+        const lowerCaseName = pokemon.name.toLowerCase();
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+        // Arama terimini Pokémon adında sırasıyla bulma
+        let match = true;
+        let lastIndex = 0;
+
+        for (let char of lowerCaseSearchTerm) {
+            lastIndex = lowerCaseName.indexOf(char, lastIndex);
+            if (lastIndex === -1) {
+                match = false;
+                break;
+            }
+            lastIndex++;
+        }
+
+        return match;
+    }).filter((pokemon) =>
       selectedType ? pokemon.types.includes(selectedType) : true
     );
     setFilteredPokemon(filtered);
-  }, [searchTerm, selectedType, pokemonList]);
+}, [searchTerm, selectedType, pokemonList]);
+
 
   const TOTAL_PAGES = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
   const paginatedPokemon = filteredPokemon.slice(offset, offset + ITEMS_PER_PAGE);
@@ -138,11 +155,11 @@ export default function PokemonPage({ searchParams }) {
 
         <ul className="grid grid-cols-2 2xl:grid-cols-6 lg:grid-cols-4 md:grid-col-2 gap-10">
           {paginatedPokemon.map((pokemon, index) => (
-            <li key={index} className="relative shadow-xl hover:scale-105 active:scale-95 rounded-3xl from-slate-50 active:shadow-red-900 transition-transform">
+            <li key={index} className="relative shadow-xl hover:scale-105 active:scale-95 rounded-3xl active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                 <div className="flex flex-col items-center justify-center bg-gradient-to-tr from-zinc-600 rounded-3xl shadow-2xl">
                   <span className="text-white bg-zinc-800 w-36 rounded-full bg-opacity-35 font-bold text-2xl mt-8 capitalize">{pokemon.name}</span>
-                  <img src={pokemon.image} alt={pokemon.name} className="w-44 mt-2 object-contain" />
+                  <Image src={pokemon.image} alt={pokemon.name} width={176} height={176} className="mt-2 object-contain" />
                   <div className="flex space-x-4 m-4 items-center">
                     {pokemon.types.map((type) => (
                       <div key={type} className="flex flex-col items-center">
