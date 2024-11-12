@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // useRouter import ediliyor
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const ITEMS_PER_PAGE = 24;
 
@@ -28,8 +29,8 @@ const typeImages = {
   dark: "/dark.png",
 };
 
-async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=120`);
+async function getAllPokemon(offset) {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${ITEMS_PER_PAGE}`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }
@@ -53,8 +54,9 @@ export default function PokemonPage({ searchParams }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState(searchParams.type || ""); // Başlangıç değeri searchParams.type
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const page = parseInt(searchParams.page || "1", 10);
   const offset = (page - 1) * ITEMS_PER_PAGE;
@@ -63,7 +65,7 @@ export default function PokemonPage({ searchParams }) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getAllPokemon();
+        const data = await getAllPokemon(offset);
         const pokemonDetails = await Promise.all(
           data.results.map(async (pokemon) => {
             const details = await getPokemonDetails(pokemon.url);
@@ -80,49 +82,52 @@ export default function PokemonPage({ searchParams }) {
     };
 
     fetchData();
-  }, [searchParams.page]);
+  }, [offset]);
 
   useEffect(() => {
-    const filtered = pokemonList.filter((pokemon) => {
+    const filtered = pokemonList
+      .filter((pokemon) => {
         const lowerCaseName = pokemon.name.toLowerCase();
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
 
-        // Arama terimini Pokémon adında sırasıyla bulma
         let match = true;
         let lastIndex = 0;
 
         for (let char of lowerCaseSearchTerm) {
-            lastIndex = lowerCaseName.indexOf(char, lastIndex);
-            if (lastIndex === -1) {
-                match = false;
-                break;
-            }
-            lastIndex++;
+          lastIndex = lowerCaseName.indexOf(char, lastIndex);
+          if (lastIndex === -1) {
+            match = false;
+            break;
+          }
+          lastIndex++;
         }
 
         return match;
-    }).filter((pokemon) =>
-      selectedType ? pokemon.types.includes(selectedType) : true
-    );
+      })
+      .filter((pokemon) =>
+        selectedType ? pokemon.types.includes(selectedType) : true
+      );
     setFilteredPokemon(filtered);
   }, [searchTerm, selectedType, pokemonList]);
 
-  const TOTAL_PAGES = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
-  const paginatedPokemon = filteredPokemon.slice(offset, offset + ITEMS_PER_PAGE);
-  const pageNumbers = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
+  useEffect(() => {
+    // selectedType güncellendiğinde URL'yi yönlendir
+    const typeQuery = selectedType ? `&type=${selectedType}` : "";
+    router.push(`/pokemon?page=1${typeQuery}`);
+  }, [selectedType, router]);
 
   return (
     <div className="relative pt-12 overflow-hidden">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
       <section className="relative p-10 z-10 pb-3 md:p-28 text-center text-white mt-52 md:mt-32">
-        <div className="flex mb-24 relative  w-full md:w-3/6 lg:w-2/6 mx-auto space-x-1">
+        <div className="flex mb-24 relative w-full md:w-3/6 lg:w-2/6 mx-auto space-x-1">
           <input
             type="text"
             placeholder="Bir Pokemon Ara..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600 "
+            className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
           />
           <select
             value={selectedType}
@@ -130,7 +135,7 @@ export default function PokemonPage({ searchParams }) {
             className="px-6 py-2 bg-zinc-400 text-zinc-700 text-lg rounded-full shadow-2xl appearance-none cursor-pointer focus:outline-none"
           >
             <option value="">Tür Filtrele</option>
-            {["fire", "water", "grass", "electric", "poison", "flying", "bug", "ghost", "normal", "dark", "ground", "ice", "rock", "psychic", "fighting", "fairy"].map((type) => (
+            {Object.keys(typeImages).map((type) => (
               <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
             ))}
           </select>
@@ -138,11 +143,7 @@ export default function PokemonPage({ searchParams }) {
 
         {loading && (
           <div className="flex justify-center items-center h-screen">
-            <img 
-              src="/loader.gif" 
-              alt="Yükleniyor..." 
-              className="w-40 h-40" 
-            />
+            <img src="/loader.gif" alt="Yükleniyor..." className="w-40 h-40" />
           </div>
         )}
 
@@ -152,8 +153,8 @@ export default function PokemonPage({ searchParams }) {
           </div>
         )}
 
-        <ul className="grid grid-cols-2 2xl:grid-cols-6 lg:grid-cols-4 md:grid-col-2 gap-10">
-          {paginatedPokemon.map((pokemon, index) => (
+        <ul className="grid grid-cols-1 2xl:grid-cols-6 lg:grid-cols-4 md:grid-col-2 gap-10">
+          {filteredPokemon.map((pokemon, index) => (
             <li key={index} className="relative shadow-xl hover:scale-105 active:scale-95 rounded-3xl active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                 <div className="flex flex-col items-center justify-center bg-gradient-to-tr from-zinc-600 rounded-3xl shadow-2xl">
@@ -174,17 +175,15 @@ export default function PokemonPage({ searchParams }) {
         </ul>
 
         <div className="mt-14 flex justify-center items-center space-x-4">
-          {page > 1 && <Link href={`/pokemon?page=${page - 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronLeft className="mr-2" /></Link>}
-          <div className="flex space-x-2">
-            {pageNumbers.map((num) => (
-              <Link key={num} href={`/pokemon?page=${num}`}>
-                <span className={`px-4 py-2 rounded-lg ${num === page ? "bg-red-600 text-white" : "bg-red-400 hover:bg-red-500"} transition-colors`}>{num}</span>
-              </Link>
-            ))}
-          </div>
-          {page < TOTAL_PAGES && <Link href={`/pokemon?page=${page + 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronRight className="ml-2" /></Link>}
+          {page > 1 && (
+            <Link href={`/pokemon?page=${page - 1}${selectedType ? `&type=${selectedType}` : ""}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center">
+              <FaChevronLeft className="mr-2" />
+            </Link>
+          )}
+          <Link href={`/pokemon?page=${page + 1}${selectedType ? `&type=${selectedType}` : ""}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center">
+            <FaChevronRight className="ml-2" />
+          </Link>
         </div>
-
       </section>
     </div>
   );

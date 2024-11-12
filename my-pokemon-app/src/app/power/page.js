@@ -29,7 +29,7 @@ const typeImages = {
 };
 
 async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=120`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=400`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }
@@ -83,39 +83,57 @@ export default function PokemonPage({ searchParams }) {
     };
 
     fetchData();
-  }, [searchParams.page]);
+  }, [searchParams]);
 
   const TOTAL_PAGES = Math.ceil(pokemonList.length / ITEMS_PER_PAGE);
-  const pageNumbers = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    if (TOTAL_PAGES <= 5) {
+      for (let i = 1; i <= TOTAL_PAGES; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      pageNumbers.push(1);
+      if (page > 3) pageNumbers.push("...");
+      if (page > 2) pageNumbers.push(page - 1);
+      pageNumbers.push(page);
+      if (page < TOTAL_PAGES - 1) pageNumbers.push(page + 1);
+      if (page < TOTAL_PAGES - 2) pageNumbers.push("...");
+      pageNumbers.push(TOTAL_PAGES);
+    }
+    return pageNumbers;
+  };
 
-  const calculateAverageStats = (stats) => {
+  const calculatecolors = (stats) => {
     const values = Object.values(stats);
     const total = values.reduce((acc, stat) => acc + stat, 0);
     return Math.round(total / values.length);
   };
 
-  const getStatColor = (averageStat) => {
-    if (averageStat < 60) {
-      return "bg-gradient-to-tr from-gray-600";
-    } else if (averageStat < 80) {
-      return "bg-gradient-to-tr from-blue-600 ";
-    } else {
-      return "bg-gradient-to-tr from-yellow-600";
+  const getStatColor = (color) => {
+    if (color < 60) {
+      return "bg-gradient-to-br from-gray-600";
+    } else if (color < 80) {
+      return "bg-gradient-to-br from-blue-600 ";
+    } else if (color < 100) {
+      return "bg-gradient-to-br from-fuchsia-600";
+    }
+    else{
+      return "bg-gradient-to-br from-yellow-600";
     }
   };
 
-  // Sıralama işlemi: Pokémon'ları ortalama statlarına göre büyükten küçüğe sırala
   const sortedPokemon = [...pokemonList].sort((a, b) => {
-    const avgStatA = calculateAverageStats(a.stats);
-    const avgStatB = calculateAverageStats(b.stats);
-    return avgStatB - avgStatA; // Büyükten küçüğe sıralama
+    const avgStatA = calculatecolors(a.stats);
+    const avgStatB = calculatecolors(b.stats);
+    return avgStatB - avgStatA;
   });
 
   return (
     <div className="relative pt-12 overflow-hidden">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
-      <section className="relative p-10 z-10 pb-3 md:p-28 text-center text-white mt-52 md:mt-32">
+      <section className="relative p-12 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <img src="/loader.gif" alt="Yükleniyor..." className="w-40 h-40" />
@@ -128,27 +146,31 @@ export default function PokemonPage({ searchParams }) {
           </div>
         )}
 
-        <ul className="grid grid-cols-2 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-2 gap-10">
+        <ul className="grid grid-cols-1 2xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-2 gap-10">
           {sortedPokemon.slice(offset, offset + ITEMS_PER_PAGE).map((pokemon, index) => {
-            const averageStat = calculateAverageStats(pokemon.stats);
+            const averageStat = calculatecolors(pokemon.stats);
             const statColor = getStatColor(averageStat);
             return (
-              <li key={index} className="relative shadow-xl hover:scale-105 active:scale-95 rounded-3xl active:shadow-red-900 transition-transform">
+              <li key={index} className="relative  hover:scale-105 active:scale-95 rounded-3xl transition-transform">
                 <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                  <div className={`box ${statColor} rounded-3xl shadow-2xl`}>
-                    <div className="flex items-center">
-                      <div className="relative flex flex-col items-center mr-3">
-                        <div className={`w-10 h-10 rounded-full ${statColor} flex justify-center items-center text-white font-semibold`}>
-                          {averageStat}
-                        </div>
-                        <img className="w-10 h-10 mt-2" src={typeImages[pokemon.types[0]] || "/default.png"} alt={pokemon.types[0]} />
-                        <span className="text-white mt-1 text-sm">{pokemon.types[0]}</span>
+                  <div className={` ${statColor} rounded-xl shadow-2xl`}>
+                    <div className="absolute top-8 left-2">
+                      <div className={`w-10 h-10  rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold`}>
+                        {averageStat}
                       </div>
-                      <img className="w-32 h-auto rounded-full shadow-lg" src={pokemon.image} alt={pokemon.name} />
+                      <div className="mt-2">
+                        {pokemon.types.map((type, index) => (
+                          <div key={index} className="flex flex-col items-center mt-1">
+                            <Image className="w-8 h-8" src={typeImages[type] || "/default.png"} width={40} height={40} alt={type} />
+                            <span className="text-white text-sm">{type}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+                    <Image className="w-48 h-48 mx-16 mt-5" src={pokemon.image} width={200} height={200} alt={pokemon.name} />
                     <h2 className="text-xl font-bold text-white mt-4">{pokemon.name}</h2>
-                    <hr className="my-3 border-t-2 border-white" />
-                    <div className="grid grid-cols-2 gap-4 mt-3">
+                    <hr className="my-4 border-t-2 border-white mx-5" />
+                    <div className="grid grid-cols-2 gap-4 mb-3">
                       <div>
                         <ul className="text-white">
                           <li>HP: {pokemon.stats.hp}</li>
@@ -157,7 +179,7 @@ export default function PokemonPage({ searchParams }) {
                         </ul>
                       </div>
                       <div>
-                        <ul className="text-white">
+                        <ul className="text-white border-l-2 border-white h-18 mb-3">
                           <li>SA: {pokemon.stats["special-attack"]}</li>
                           <li>SD: {pokemon.stats["special-defense"]}</li>
                           <li>SPD: {pokemon.stats.speed}</li>
@@ -174,9 +196,11 @@ export default function PokemonPage({ searchParams }) {
         <div className="mt-14 flex justify-center items-center space-x-4">
           {page > 1 && <Link href={`/power?page=${page - 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronLeft className="mr-2" /></Link>}
           <div className="flex space-x-2">
-            {pageNumbers.map((num) => (
-              <Link key={num} href={`/power?page=${num}`}>
-                <span className={`px-4 py-2 rounded-lg ${num === page ? "bg-red-600 text-white" : "bg-red-400 hover:bg-red-500"} transition-colors`}>{num}</span>
+            {getPageNumbers().map((num, index) => (
+              <Link key={index} href={`/power?page=${num === "..." ? page : num}`}>
+                <span className={`px-4 py-2 rounded-lg ${num === page ? "bg-red-600 text-white" : "bg-red-400 hover:bg-red-500"} transition-colors`}>
+                  {num}
+                </span>
               </Link>
             ))}
           </div>

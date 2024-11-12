@@ -36,7 +36,10 @@ const Header = () => {
             Pokémonlar
           </Link>
           <Link href="/power" className="hover:text-yellow-300 transition-colors">
-        Güç Sıralması
+        Sıralama
+          </Link>
+          <Link href="/champions" className="hover:text-yellow-300 transition-colors">
+        Şampiyonlar
           </Link>
         </div>
 
@@ -71,9 +74,14 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/sıralama" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
-                Sıralama
+              <Link href="/power" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
+                Güç Sıralması
               </Link>
+            </li>
+            <li>
+            <Link href="/champions" className="hover:text-yellow-300 transition-colors">
+        Şampiyonlar
+          </Link>
             </li>
           </ul>
           <div className="mt-auto flex justify-center">
