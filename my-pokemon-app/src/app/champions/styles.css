@@ -1,0 +1,75 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100vh; /* Sayfanın tam yüksekliğini al */
+}
+
+.box {
+    display: flex;
+    justify-content: space-between; /* Resimler arasına eşit boşluk koy */
+    width: 500px;  /* Kutunun genişliği */
+    height: 100px; /* Kutunun yüksekliği */
+    background-color: gray;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 800px;
+    max-height: 200px;  /* Resimler ve çizgiler dışarı taşmasın */
+}
+
+.photo {
+    width: 125px;   /* Her resim genişliğinin üçte biri */
+    height: 100px;     /* Yükseklik tam kutunun yüksekliği kadar */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    z-index: 2;  /* Resmi kutuya orantılı şekilde sığdır */
+}
+
+.stick {
+    width: 0px;           /* Dikey çizginin kalınlığı */
+    height: 300px;         /* Çizginin yüksekliği */
+    background-color: rgb(51, 51, 51);
+    align-self: center;  /* Çizgiyi ortalamak için */
+    z-index: 1; 
+    overflow: hidden;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    padding: 1px;
+}
+.content {
+    position: relative; /* Çizgiyi resmin üzerine yerleştireceğiz */
+    height: 100%;
+    width: 33.33%;  /* Her bir içeriğin genişliği kutunun üçte biri */
+    display: flex;
+    justify-content: center; /* Resimleri ortalamak için */
+    align-items: center;
+    transform: rotate(45deg);
+}
+.photo-1 {
+    width: 125px;   /* Her resim genişliğinin üçte biri */
+    height: 100px;     /* Yükseklik tam kutunun yüksekliği kadar */
+    object-fit: cover;
+    transform: rotate(-45deg);  /* Başlangıçta dönüş açısı */
+    overflow: hidden;
+    transition: transform 0.3s ease; 
+    z-index: 2; /* Yumuşak geçiş efekti */
+}
+.photo:hover {
+    transform: scale(1.5) translateX(20px);
+    margin-right: 20px;
+}
+.photo-1:hover {
+    transform: rotate(-45deg) scale(1.5);
+    margin: 20px;
+}
+.photo-2 {
+    width: 125px;   /* Her resim genişliğinin üçte biri */
+    height: 100px;     /* Yükseklik tam kutunun yüksekliği kadar */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    z-index: 2;  /* Resmi kutuya orantılı şekilde sığdır */
+}
+.photo-2:hover {
+    transform: scale(1.5) translateX(-5px);
+    margin-right: 40px;
+}

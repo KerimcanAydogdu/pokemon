@@ -75,12 +75,12 @@ const Header = () => {
             </li>
             <li>
               <Link href="/power" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
-                Güç Sıralması
+                Sıralama
               </Link>
             </li>
             <li>
-            <Link href="/champions" className="hover:text-yellow-300 transition-colors">
-        Şampiyonlar
+            <Link href="/champions" className="hover:text-yellow-300 p-3 transition-colors">
+              Şampiyonlar
           </Link>
             </li>
           </ul>

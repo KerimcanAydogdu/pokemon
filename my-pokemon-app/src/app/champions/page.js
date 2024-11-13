@@ -1,8 +1,8 @@
-'use client';
+'use client'
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { useRouter } from 'next/navigation';
 
 async function getAllPokemon() {
   const res = await fetch('https://pokeapi.co/api/v2/pokemon?offset=0&limit=500');
@@ -151,37 +151,47 @@ export default function PokemonPage() {
           </div>
         )}
 
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-10">
           {sortedTypesByAvgStat.map(({ type, avgStat }) => (
-            <div key={type} className="mb-11">
-              <h3
-                className="text-2xl font-semibold text-white cursor-pointer rounded-xl bg-zinc-600 bg-opacity-45 hover:text-yellow-400"
+            <div key={type} className="p-4">
+              <h2
+                className={`text-2xl cursor-pointer font-bold ${getTypeEffect(type)}`}
                 onClick={() => handleTypeClick(type)}
               >
-                {type.toUpperCase()} -  {Math.round(avgStat)}
-              </h3>
-              <div className={`flex mt-6 `}>
-                {topPokemonByType[type].map((pokemon, index) => (
-                  <li key={index} className={`relative shadow-xl hover:scale-125 duration-300 rounded-3xl transition-transform ${getTypeEffect(type)}`}>
-                    <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                    <div className="relative rounded-xl overflow-hidden group transform scale-105 transition-transform duration-300">
-                      <div className="absolute top-2 left-2 z-50">
-                        <div className="w-8 h-8 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
-                          {pokemon.avgStat}
+                {type.toUpperCase()} - {Math.round(avgStat)}
+              </h2>
+              {/* Yeni eklenen kısım: En iyi 3 Pokémon */}
+              <div className="flex flex-wrap justify-center gap-5 mt-5">
+                {topPokemonByType[type].map((pokemon, index) => {
+                  const averageStat = calculateAverageStat(pokemon.stats);
+                  return (
+                    <div key={index} className="relative hover:scale-110 active:scale-95 mt-7 rounded-3xl transition-transform">
+                      <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
+                        <div className={`rounded-xl shadow-2xl p-4 ${getTypeEffect(type)}`}>
+                      <div className="flex justify-between items-start">
+                      <div className="flex flex-col mr-2 items-center">
+                              <div className="w-9 h-9 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
+                                {averageStat}
+                              </div>
+                              </div>
+                            {/* Pokémon Resmi */}
+                            <div className="flex-auto flex justify-center items-center">
+                              <Image className="w-32 h-32" src={pokemon.image} width={250} height={200} alt={pokemon.name} />
+                            </div>
+                          </div>
+
+                          {/* Pokémon İsmi */}
+                          <h2 className="text-xl font-bold text-white mt-4 text-center">{pokemon.name}</h2>
+                          
                         </div>
-                      </div>
-                      <div className="w-full h-40 overflow-hidden relative group">
-                        <Image className="w-full h-full object-cover" src={pokemon.image} width={200} height={200} alt={pokemon.name} />
-                      </div>
-                      <h2 className="text-xl font-bold text-white mt-4">{pokemon.name}</h2>
+                      </Link>
                     </div>
-                    </Link>
-                  </li>
-                ))}
-              </div>
+                  );
+                })}
+                </div>
             </div>
           ))}
-        </ul>
+        </div>
       </section>
     </div>
   );

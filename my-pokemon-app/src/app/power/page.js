@@ -146,52 +146,89 @@ export default function PokemonPage({ searchParams }) {
           </div>
         )}
 
-        <ul className="grid grid-cols-1 2xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-2 gap-10">
-          {sortedPokemon.slice(offset, offset + ITEMS_PER_PAGE).map((pokemon, index) => {
-            const averageStat = calculatecolors(pokemon.stats);
-            const statColor = getStatColor(averageStat);
-            return (
-              <li key={index} className="relative  hover:scale-105 active:scale-95 rounded-3xl transition-transform">
-                <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                  <div className={` ${statColor} rounded-xl shadow-2xl`}>
-                    <div className="absolute top-8 left-2">
-                      <div className={`w-10 h-10  rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold`}>
-                        {averageStat}
-                      </div>
-                      <div className="mt-2">
-                        {pokemon.types.map((type, index) => (
-                          <div key={index} className="flex flex-col items-center mt-1">
-                            <Image className="w-8 h-8" src={typeImages[type] || "/default.png"} width={40} height={40} alt={type} />
-                            <span className="text-white text-sm">{type}</span>
-                          </div>
-                        ))}
-                      </div>
+<div className="grid grid-cols-1 2xl:grid-cols-6 lg:grid-cols-3 sm:grid-cols-2 gap-10">
+  {sortedPokemon.slice(offset, offset + ITEMS_PER_PAGE).map((pokemon, index) => {
+    const averageStat = calculatecolors(pokemon.stats);
+    const statColor = getStatColor(averageStat);
+    return (
+      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-transform">
+        <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
+          <div className={`${statColor} rounded-xl shadow-2xl p-4`}>
+            <div className="flex justify-between items-start">
+              {/* Stat ve Tipler Kısmı */}
+              <div className="flex flex-col mr-2 items-center">
+                <div className="w-9 h-9 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
+                  {averageStat}
+                </div>
+                <div className="mt-2 flex flex-col">
+                  {pokemon.types.map((type, index) => (
+                    <div key={index} className="flex flex-col items-center mt-1">
+                      <Image className="w-8 h-8" src={typeImages[type] || "/default.png"} width={40} height={40} alt={type} />
+                      <span className="text-white text-sm">{type}</span>
                     </div>
-                    <Image className="w-48 h-48 mx-16 mt-5" src={pokemon.image} width={200} height={200} alt={pokemon.name} />
-                    <h2 className="text-xl font-bold text-white mt-4">{pokemon.name}</h2>
-                    <hr className="my-4 border-t-2 border-white mx-5" />
-                    <div className="grid grid-cols-2 gap-4 mb-3">
-                      <div>
-                        <ul className="text-white">
-                          <li>HP: {pokemon.stats.hp}</li>
-                          <li>ATK: {pokemon.stats.attack}</li>
-                          <li>DEF: {pokemon.stats.defense}</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <ul className="text-white border-l-2 border-white h-18 mb-3">
-                          <li>SA: {pokemon.stats["special-attack"]}</li>
-                          <li>SD: {pokemon.stats["special-defense"]}</li>
-                          <li>SPD: {pokemon.stats.speed}</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pokémon Resmi */}
+              <div className="flex-auto flex justify-center items-center">
+                <Image
+                  className="w-44 h-44"
+                  src={pokemon.image}
+                  width={250}
+                  height={200}
+                  alt={pokemon.name}
+                />
+              </div>
+            </div>
+
+            {/* Pokémon İsmi */}
+            <h2 className="text-xl font-bold text-white mt-4 text-center">{pokemon.name}</h2>
+            <hr className="my-4 border-t-2 border-white w-4/5 mx-auto" />
+            
+            {/* Statlar Kısmı */}
+            <div className="grid grid-cols-2 gap-4 mb-2">
+  <div className="text-white">
+    <ul className="space-y-1 mx-2">
+    <li className="flex justify-between">
+        <span>ATK:</span>
+        <span>{pokemon.stats.attack}</span>
+      </li>
+      <li className="flex justify-between">
+        <span>DEF:</span>
+        <span>{pokemon.stats.defense}</span>
+      </li>
+      <li className="flex justify-between">
+        <span>SPD:</span>
+        <span>{pokemon.stats.speed}</span>
+      </li>
+    </ul>
+  </div>
+  <div className="text-white border-l-2 border-white pl-4">
+    <ul className="space-y-1 mx-2">
+      <li className="flex justify-between">
+        <span>HP:</span>
+        <span>{pokemon.stats.hp}</span>
+      </li>
+      <li className="flex justify-between">
+        <span>SD:</span>
+        <span>{pokemon.stats["special-defense"]}</span>
+      </li>
+      <li className="flex justify-between">
+        <span>SA:</span>
+        <span>{pokemon.stats["special-attack"]}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+          </div>
+        </Link>
+      </div>
+    );
+  })}
+</div>
+
 
         <div className="mt-14 flex justify-center items-center space-x-4">
           {page > 1 && <Link href={`/power?page=${page - 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronLeft className="mr-2" /></Link>}

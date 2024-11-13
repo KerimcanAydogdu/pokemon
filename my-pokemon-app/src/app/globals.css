@@ -51,7 +51,7 @@ body {
 }
 /* Grass (Çim) */
 .grass-effect {
-  animation: grass-animation 3s infinite alternate;
+  animation: grass-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 15px rgba(34, 139, 34, 0.5), inset 0 0 20px rgba(0, 255, 127, 0.6);
 }
@@ -70,7 +70,7 @@ body {
 
 /* Poison (Zehir) */
 .poison-effect {
-  animation: poison-animation 2.5s infinite alternate;
+  animation: poison-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 15px rgba(138, 43, 226, 0.5), inset 0 0 15px rgba(153, 50, 204, 0.6);
 }
@@ -89,7 +89,7 @@ body {
 
 /* Fire (Ateş) */
 .fire-effect {
-  animation: fire-animation 1.5s infinite alternate;
+  animation: fire-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.8);
 }
@@ -108,7 +108,7 @@ body {
 
 /* Water (Su) */
 .water-effect {
-  animation: water-animation 1.8s ease-in-out infinite;
+  animation: water-animation 3.5s ease-in-out infinite;
   background-size: cover;
   box-shadow: 0 0 15px rgba(0, 191, 255, 0.5), inset 0 0 20px rgba(0, 140, 255, 0.7);
 }
@@ -127,7 +127,7 @@ body {
 
 /* Flying (Uçan) */
 .flying-effect {
-  animation: flying-animation 2s infinite;
+  animation: flying-animation 3.5s infinite;
   background-size: cover;
   box-shadow: 0 0 15px rgba(135, 206, 250, 0.6), inset 0 0 20px rgba(176, 224, 230, 0.7);
 }
@@ -146,7 +146,7 @@ body {
 
 /* Bug (Böcek) */
 .bug-effect {
-  animation: bug-animation 2.5s infinite;
+  animation: bug-animation 3.5s infinite;
   background-size: cover;
   box-shadow: 0 0 10px rgba(50, 205, 50, 0.6), inset 0 0 15px rgba(34, 139, 34, 0.7);
 }
@@ -165,7 +165,7 @@ body {
 
 /* Normal */
 .normal-effect {
-  animation: normal-animation 1.5s infinite alternate;
+  animation: normal-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 15px rgba(128, 128, 128, 0.6), inset 0 0 10px rgba(192, 192, 192, 0.5);
 }
@@ -184,7 +184,7 @@ body {
 
 /* Electric (Elektrik) */
 .electric-effect {
-  animation: electric-animation 0.7s infinite alternate;
+  animation: electric-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 30px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 255, 255, 0.8);
 }
@@ -203,7 +203,7 @@ body {
 
 /* Ground (Yer) */
 .ground-effect {
-  animation: ground-animation 2.2s infinite alternate;
+  animation: ground-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 15px rgba(160, 82, 45, 0.7), inset 0 0 20px rgba(210, 180, 140, 0.6);
 }
@@ -222,7 +222,7 @@ body {
 
 /* Fairy (Peri) */
 .fairy-effect {
-  animation: fairy-animation 3s infinite alternate;
+  animation: fairy-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 25px rgba(255, 192, 203, 0.5), inset 0 0 15px rgba(255, 182, 193, 0.7);
 }
@@ -241,7 +241,7 @@ body {
 
 /* Fighting (Dövüş) */
 .fighting-effect {
-  animation: fighting-animation 1s infinite alternate;
+  animation: fighting-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 25px rgba(255, 69, 0, 0.6), inset 0 0 15px rgba(255, 0, 0, 0.7);
 }
@@ -260,7 +260,7 @@ body {
 
 /* Psychic (Psişik) */
 .psychic-effect {
-  animation: psychic-animation 2s infinite;
+  animation: psychic-animation 3.5s infinite;
   background-size: cover;
   box-shadow: 0 0 20px rgba(255, 20, 147, 0.7), inset 0 0 25px rgba(255, 105, 180, 0.6);
 }
@@ -278,7 +278,7 @@ body {
 }
 
 .ice-effect {
-  animation: ice-animation 2.3s infinite alternate;
+  animation: ice-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 25px rgba(0, 191, 255, 0.7), inset 0 0 30px rgba(70, 130, 180, 0.8);
 }
@@ -297,7 +297,7 @@ body {
 
 /* Rock (Taş) */
 .rock-effect {
-  animation: rock-animation 2.8s infinite alternate;
+  animation: rock-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 20px rgba(169, 169, 169, 0.7), inset 0 0 20px rgba(128, 128, 128, 0.6);
 }
@@ -316,7 +316,7 @@ body {
 
 /* Ghost (Hayalet) */
 .ghost-effect {
-  animation: ghost-animation 2.4s infinite alternate;
+  animation: ghost-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 20px rgba(128, 0, 128, 0.7), inset 0 0 30px rgba(186, 85, 211, 0.6);
 }
@@ -335,7 +335,7 @@ body {
 
 /* Steel (Çelik) */
 .steel-effect {
-  animation: steel-animation 3s infinite alternate;
+  animation: steel-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 30px rgba(169, 169, 169, 0.7), inset 0 0 25px rgba(105, 105, 105, 0.8);
 }
@@ -373,7 +373,7 @@ body {
 
 /* Dragon (Ejderha) */
 .dragon-effect {
-  animation: dragon-animation 1.5s infinite alternate;
+  animation: dragon-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 0 30px rgba(255, 69, 0, 0.7);
 }
@@ -392,7 +392,7 @@ body {
 
 /* Dark (Karanlık) */
 .dark-effect {
-  animation: dark-animation 2.5s infinite alternate;
+  animation: dark-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 30px rgba(47, 79, 79, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.7);
 }
