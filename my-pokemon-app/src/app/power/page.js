@@ -151,9 +151,9 @@ export default function PokemonPage({ searchParams }) {
     const averageStat = calculatecolors(pokemon.stats);
     const statColor = getStatColor(averageStat);
     return (
-      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-transform">
+      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-transform border border-white" >
         <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-          <div className={`${statColor} rounded-xl shadow-2xl p-4`}>
+          <div className={`${statColor} rounded-3xl shadow-2xl p-4`}>
             <div className="flex justify-between items-start">
               {/* Stat ve Tipler Kısmı */}
               <div className="flex flex-col mr-2 items-center">

@@ -165,9 +165,9 @@ export default function PokemonPage() {
                 {topPokemonByType[type].map((pokemon, index) => {
                   const averageStat = calculateAverageStat(pokemon.stats);
                   return (
-                    <div key={index} className="relative hover:scale-110 active:scale-95 mt-7 rounded-3xl transition-transform">
+                    <div key={index} className="relative hover:scale-110 active:scale-95 mt-7 rounded-3xl transition-transform border-2 border-white">
                       <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                        <div className={`rounded-xl shadow-2xl p-4 ${getTypeEffect(type)}`}>
+                        <div className={`rounded-3xl shadow-2xl p-4 ${getTypeEffect(type)}`}>
                       <div className="flex justify-between items-start">
                       <div className="flex flex-col mr-2 items-center">
                               <div className="w-9 h-9 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
