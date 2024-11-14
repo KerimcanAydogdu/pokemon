@@ -58,28 +58,28 @@ const Header = () => {
         onClick={() => setIsMenuOpen(false)}
       >
         <div
-          className={`fixed top-0 right-0 w-3/5 sm:w-3/5 max-w-xs bg-gradient-to-br from-red-700 to-red-900 h-full shadow-lg p-6 transform transition-transform duration-500 ${
+          className={`fixed top-0 right-0 w-3/5 sm:w-3/5 max-w-xs bg-gradient-to-br from-yellow-500  to-blue-950 h-full shadow-lg p-6 transform transition-transform duration-500 ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           <ul className="flex flex-col space-y-6 text-lg text-white mt-20">
             <li>
-              <Link href="/" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
+              <Link href="/" onClick={() => setIsMenuOpen(false)} className="block hover:bg-gradient-to-br from-yellow-500  to-blue-950 p-3 rounded-lg transition-all">
                 Anasayfa
               </Link>
             </li>
             <li>
-              <Link href="/pokemon?page=1" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
+              <Link href="/pokemon?page=1" onClick={() => setIsMenuOpen(false)} className="block hover:bg-gradient-to-br from-yellow-500  to-blue-950 p-3 rounded-lg transition-all">
                 Pokémonlar
               </Link>
             </li>
             <li>
-              <Link href="/power" onClick={() => setIsMenuOpen(false)} className="block hover:bg-red-800 p-3 rounded-lg transition-all">
+              <Link href="/power" onClick={() => setIsMenuOpen(false)} className="block hover:bg-gradient-to-br from-yellow-500  to-blue-950 p-3 rounded-lg transition-all">
                 Sıralama
               </Link>
             </li>
             <li>
-            <Link href="/champions" className="hover:text-yellow-300 p-3 transition-colors">
+            <Link href="/power" onClick={() => setIsMenuOpen(false)} className="block hover:bg-gradient-to-br from-yellow-500  to-blue-950 p-3 rounded-lg transition-all">
               Şampiyonlar
           </Link>
             </li>

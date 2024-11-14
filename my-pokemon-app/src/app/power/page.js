@@ -6,6 +6,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Image from "next/image";
 
 const ITEMS_PER_PAGE = 24;
+const TOTAL_POKEMON = 1000;
 
 const typeImages = {
   grass: "/grass.png",
@@ -29,7 +30,7 @@ const typeImages = {
 };
 
 async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=400`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=1000`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }
@@ -62,6 +63,7 @@ export default function PokemonPage({ searchParams }) {
 
   const page = parseInt(searchParams.page || "1", 10);
   const offset = (page - 1) * ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(TOTAL_POKEMON / ITEMS_PER_PAGE);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,24 +87,29 @@ export default function PokemonPage({ searchParams }) {
     fetchData();
   }, [searchParams]);
 
-  const TOTAL_PAGES = Math.ceil(pokemonList.length / ITEMS_PER_PAGE);
-  const getPageNumbers = () => {
+  const getPageNumbers = (currentPage, totalPages) => {
     const pageNumbers = [];
-    if (TOTAL_PAGES <= 5) {
-      for (let i = 1; i <= TOTAL_PAGES; i++) {
+    const range = 2; // Aralık (örneğin, 1, 5, 12, 25... şeklinde)
+    
+    // İlk sayfayı ekle
+    pageNumbers.push(1);
+
+    // Önceki sayfa numaralarını ekle
+    for (let i = currentPage - range; i <= currentPage + range; i++) {
+      if (i > 1 && i < totalPages && !pageNumbers.includes(i)) {
         pageNumbers.push(i);
       }
-    } else {
-      pageNumbers.push(1);
-      if (page > 3) pageNumbers.push("...");
-      if (page > 2) pageNumbers.push(page - 1);
-      pageNumbers.push(page);
-      if (page < TOTAL_PAGES - 1) pageNumbers.push(page + 1);
-      if (page < TOTAL_PAGES - 2) pageNumbers.push("...");
-      pageNumbers.push(TOTAL_PAGES);
     }
+
+    // Son sayfayı ekle
+    if (!pageNumbers.includes(totalPages)) {
+      pageNumbers.push(totalPages);
+    }
+
     return pageNumbers;
   };
+
+  const pageNumbers = getPageNumbers(page, totalPages);
 
   const calculatecolors = (stats) => {
     const values = Object.values(stats);
@@ -111,13 +118,19 @@ export default function PokemonPage({ searchParams }) {
   };
 
   const getStatColor = (color) => {
-    if (color < 60) {
-      return "bg-gradient-to-br from-gray-600";
-    } else if (color < 80) {
-      return "bg-gradient-to-br from-blue-600 ";
-    } else if (color < 100) {
-      return "bg-gradient-to-br from-fuchsia-600";
+    if (color < 41) {
+      return "bg-gradient-to-br from-slate-950 via-gray-500 to-slate-900 ";
+    } else if (color < 66) {
+      return "bg-gradient-to-br from-zinc-900 via-green-500 to-blue-900 ";
+    } else if (color < 81) {
+      return "bg-gradient-to-br from-purple-900 via-blue-500 to-gray-900 ";
+    } else if (color < 101) {
+      return "bg-gradient-to-br from-red-900 via-yellow-500 to-rose-900 ";
     }
+    else if (color > 100) {
+      return "bg-rainbow";
+    }
+    
     else{
       return "bg-gradient-to-br from-yellow-600";
     }
@@ -130,17 +143,17 @@ export default function PokemonPage({ searchParams }) {
   });
 
   return (
-    <div className="relative pt-12 overflow-hidden">
+    <div className="relative pt-12 overflow-hidden min-h-screen">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
-      <section className="relative p-12 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
+      <section className="relative p-12 z-10 pb-3 md:p-20 text-center to- text-white mt-52 md:mt-32">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <img src="/loader.gif" alt="Yükleniyor..." className="w-40 h-40" />
           </div>
         )}
 
-        {pokemonList.length === 0 && !loading && (
+        {pokemonList.length === 2 && !loading && (
           <div className="flex flex-col items-center">
             <p className="text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
           </div>
@@ -184,27 +197,28 @@ export default function PokemonPage({ searchParams }) {
 
             {/* Pokémon İsmi */}
             <h2 className="text-xl font-bold text-white mt-4 text-center">{pokemon.name}</h2>
-            <hr className="my-4 border-t-2 border-white w-4/5 mx-auto" />
+            <hr className="custom-hr-x" />
             
             {/* Statlar Kısmı */}
-            <div className="grid grid-cols-2 gap-4 mb-2">
-  <div className="text-white">
-    <ul className="space-y-1 mx-2">
-    <li className="flex justify-between">
-        <span>ATK:</span>
-        <span>{pokemon.stats.attack}</span>
-      </li>
-      <li className="flex justify-between">
-        <span>DEF:</span>
-        <span>{pokemon.stats.defense}</span>
-      </li>
-      <li className="flex justify-between">
-        <span>SPD:</span>
-        <span>{pokemon.stats.speed}</span>
-      </li>
-    </ul>
-  </div>
-  <div className="text-white border-l-2 border-white pl-4">
+            <div className="flex gap-4 mb-2">
+       <div className="text-white w-full pl-1">
+         <ul className="space-y-1 mx-2">
+         <li className="flex justify-between">
+             <span>ATK:</span>
+             <span>{pokemon.stats.attack}</span>
+           </li>
+           <li className="flex justify-between">
+             <span>DEF:</span>
+             <span>{pokemon.stats.defense}</span>
+           </li>
+           <li className="flex justify-between">
+             <span>SPD:</span>
+             <span>{pokemon.stats.speed}</span>
+           </li>
+         </ul>
+       </div>
+  <div class="custom-hr-y ml-2"></div>
+  <div className="text-white w-full pl-1">
     <ul className="space-y-1 mx-2">
       <li className="flex justify-between">
         <span>HP:</span>
@@ -230,19 +244,25 @@ export default function PokemonPage({ searchParams }) {
 </div>
 
 
-        <div className="mt-14 flex justify-center items-center space-x-4">
-          {page > 1 && <Link href={`/power?page=${page - 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronLeft className="mr-2" /></Link>}
-          <div className="flex space-x-2">
-            {getPageNumbers().map((num, index) => (
-              <Link key={index} href={`/power?page=${num === "..." ? page : num}`}>
-                <span className={`px-4 py-2 rounded-lg ${num === page ? "bg-red-600 text-white" : "bg-red-400 hover:bg-red-500"} transition-colors`}>
-                  {num}
-                </span>
+{!loading && pokemonList.length > 0 && (
+          <div className="flex justify-center items-center space-x-4 mt-16">
+            <Link href={`?page=${page - 1}`} className={`text-3xl ${page === 1 && "hidden"} text-yellow-400`}>
+              <FaChevronLeft />
+            </Link>
+            {pageNumbers.map((pageNum) => (
+              <Link
+                key={pageNum}
+                href={`?page=${pageNum}`}
+                className={`text-lg font-semibold ${pageNum === page ? "bg-yellow-500 px-2 py-2" : "hover:text-yellow-400"} rounded-lg`}
+              >
+                {pageNum}
               </Link>
             ))}
+            <Link href={`?page=${page + 1}`} className={`text-3xl ${page === totalPages && "hidden"} text-yellow-400`}>
+              <FaChevronRight />
+            </Link>
           </div>
-          {page < TOTAL_PAGES && <Link href={`/power?page=${page + 1}`} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"><FaChevronRight className="ml-2" /></Link>}
-        </div>
+        )}
       </section>
     </div>
   );

@@ -154,9 +154,9 @@ export default function PokemonPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-10">
           {sortedTypesByAvgStat.map(({ type, avgStat }) => (
-            <div key={type} className="p-4">
+            <div key={type} className="p-4 ">
               <h2
-                className={`text-2xl cursor-pointer font-bold ${getTypeEffect(type)}`}
+                className={`text-2xl cursor-pointer font-bold border rounded-xl border-white ${getTypeEffect(type)}`}
                 onClick={() => handleTypeClick(type)}
               >
                 {type.toUpperCase()} - {Math.round(avgStat)}
