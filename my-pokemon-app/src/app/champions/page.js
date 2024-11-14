@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -35,6 +35,7 @@ async function getPokemonDetails(url) {
 export default function PokemonPage() {
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();  //yönlendirme
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,7 +78,7 @@ export default function PokemonPage() {
 
   const topPokemonByType = Object.keys(sortedPokemonByType).reduce((acc, type) => {
     const sortedByType = sortedPokemonByType[type].sort((a, b) => b.avgStat - a.avgStat);
-    acc[type] = sortedByType.slice(0, 3); // En güçlü 3 Pokémon
+    acc[type] = sortedByType.slice(0, 3);
     return acc;
   }, {});
 
@@ -160,7 +161,6 @@ export default function PokemonPage() {
               >
                 {type.toUpperCase()} - {Math.round(avgStat)}
               </h2>
-              {/* Yeni eklenen kısım: En iyi 3 Pokémon */}
               <div className="flex flex-wrap justify-center gap-5 mt-5">
                 {topPokemonByType[type].map((pokemon, index) => {
                   const averageStat = calculateAverageStat(pokemon.stats);
@@ -168,27 +168,23 @@ export default function PokemonPage() {
                     <div key={index} className="relative hover:scale-110 active:scale-95 mt-7 rounded-3xl transition-transform border-2 border-white">
                       <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
                         <div className={`rounded-3xl shadow-2xl p-4 ${getTypeEffect(type)}`}>
-                      <div className="flex justify-between items-start">
-                      <div className="flex flex-col mr-2 items-center">
+                          <div className="flex justify-between items-start">
+                            <div className="flex flex-col mr-2 items-center">
                               <div className="w-9 h-9 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
                                 {averageStat}
                               </div>
-                              </div>
-                            {/* Pokémon Resmi */}
+                            </div>
                             <div className="flex-auto flex justify-center items-center">
                               <Image className="w-32 h-32" src={pokemon.image} width={250} height={200} alt={pokemon.name} />
                             </div>
                           </div>
-
-                          {/* Pokémon İsmi */}
                           <h2 className="text-xl font-bold text-white mt-4 text-center">{pokemon.name}</h2>
-                          
                         </div>
                       </Link>
                     </div>
                   );
                 })}
-                </div>
+              </div>
             </div>
           ))}
         </div>
