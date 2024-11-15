@@ -174,53 +174,59 @@ function PokemonList({ searchParams }) {
     <div className="relative pt-12 overflow-hidden min-h-screen">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
-      <section className="relative p-10 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
-        <div className="flex flex-col lg:flex-row mb-24 relative w-full md:w-3/6 mx-auto space-y-4 lg:space-y-0 md:space-x-1">
-        <input
-  type="text"
-  placeholder="Bir Pokemon Ara..."
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter") {
+<section className="relative p-10 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
+<div className="flex flex-col lg:flex-row relative w-full md:w-3/6 mx-auto space-y-4 lg:space-y-0 md:space-x-1">
+  <input
+    type="text"
+    placeholder="Bir Pokemon Ara..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        handleSearch();
+      }
+    }}
+    className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
+  />
+  <select
+    value={filterType}
+    onChange={(e) => setFilterType(e.target.value)}
+    className="py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center lg:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
+  >
+    <option value="">Tür Filtrele</option>
+    {typeOptions.map((type) => (
+      <option key={type} value={type}>
+        {type.charAt(0).toUpperCase() + type.slice(1)}
+      </option>
+    ))}
+  </select>
+  <button
+    onClick={() => {
       handleSearch();
-    }
-  }}
-  className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
-/>
+      setSearchTerm("");
+    }}
+    className="px-6 py-2 flex bg-blue-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-blue-600 transition"
+  >
+    <FaSearch />
+  </button>
+  {isSearchTriggered && (
+    <button
+      onClick={handleCancelSearch}
+      className="ml-2 px-6 py-2 flex bg-red-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-red-600 transition"
+    >
+      <FaTimes className="" />
+    </button>
+  )}
+</div>
 
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
-            className=" py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center lg:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
-          >
-            <option value="">Tür Filtrele</option>
-            {typeOptions.map((type) => (
-              <option key={type} value={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={handleSearch}
-            className="px-6 py-2 flex bg-blue-500 justify-center items-center  text-white rounded-full shadow-xl hover:bg-blue-600 transition"
-          >
-            <FaSearch className="" />
-          </button>
-          {isSearchTriggered && (
-            <button
-              onClick={handleCancelSearch}
-              className="ml-2 px-6 py-2 flex bg-red-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-red-600 transition"
-            >
-              <FaTimes className="" />
-            </button>
-          )}
-        </div>
+{/* Eğer searchTerm veya filterType varsa ve butona basılmışsa, mesajı göster */}
+{(searchTerm || filterType) && !isSearchTriggered && (
+  <p className="text-sm text-red-800 lg:text-lg lg:text-red-400 mt-3">
+    ! Arama ve filtreleme işleminden sonra butona basınız.
+  </p>
+)}
+
+
 
         {loading && (
           <div className="flex justify-center items-center h-screen">
@@ -233,11 +239,11 @@ function PokemonList({ searchParams }) {
             <p className="text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
           </div>
         )}
-        <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-10">
+        <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 mt-28 md:grid-cols-2 gap-10">
           {filteredPokemon.map((pokemon, index) => (
             <li key={index} className="relative hover:scale-105  active:scale-95 active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                <div className="flex flex-col items-center justify-center bg-gradient-to-tr  from-zinc-600 rounded-3xl shadow-2xl">
+                <div className="flex flex-col items-center justify-center bg-gradient-to-tr  from-zinc-800 via-zinc-500  rounded-3xl shadow-2xl">
                   <span className="text-white bg-zinc-800 px-4 rounded-2xl bg-opacity-35 font-bold text-xl mt-8 capitalize">{pokemon.name}</span>
                   <Image src={pokemon.image} alt={pokemon.name} width={176} height={176} className="mt-2 object-contain" />
                   <div className="flex space-x-4 m-4 items-center">
