@@ -160,7 +160,7 @@ body {
 
 .custom-hr-x {
   border: 0;
-  height: 3.5px;  /* Çizginin yüksekliği */
+  height: 3px;  /* Çizginin yüksekliği */
   background: linear-gradient(to right, 
   rgba(255, 255, 255, 0) 0%,   /* Sol kenar: şeffaf */
   rgba(255, 255, 255, 1) 50%,  /* Ortada: tam opak */
