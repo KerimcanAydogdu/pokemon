@@ -119,12 +119,19 @@ export default function PokemonPage({ searchParams }) {
 
   const getStatColor = (color) => {
     if (color < 41) {
-      return "bg-gradient-to-br from-slate-950 via-gray-500 to-slate-900 ";
-    } else if (color < 66) {
-      return "bg-gradient-to-br from-zinc-900 via-green-500 to-blue-900 ";
+      return "bg-gradient-to-br from-slate-950 via-gray-500 to-slate-900 "; // gri
+    } else if (color < 56) {
+      return "bg-gradient-to-br from-emerald-950 via-green-700 to-lime-950 "; // yeşil
+    } else if (color < 71) {
+      return "bg-gradient-to-br from-indigo-950 via-blue-900 to-slate-950 "; // mavi
     } else if (color < 81) {
-      return "bg-gradient-to-br from-purple-900 via-blue-500 to-gray-900 ";
-    } else if (color < 101) {
+      return "bg-gradient-to-br from-slate-900 via-purple-800 to-pink-900 "; // kırmızı (daha canlı renkler)
+    } else if (color < 86) {
+      return "bg-gradient-to-br from-slate-950 via-rose-600 to-blue-950 "; // mor (daha zengin tonlar)
+    } else if (color < 100) {
+      return "bg-gradient-to-br from-fuchsia-900 via-pink-600 to-yellow-600 "; // ihtişamlı renk geçişi (canlı ve dikkat çekici)
+    }
+     else if (color == 100) {
       return "bg-gradient-to-br from-red-900 via-yellow-500 to-rose-900 ";
     }
     else if (color > 100) {
@@ -194,7 +201,7 @@ export default function PokemonPage({ searchParams }) {
             </div>
 
             {/* Pokémon İsmi */}
-            <h2 className="text-xl font-bold text-white mt-4 text-center">{pokemon.name}</h2>
+            <h2 className="text-base font-bold text-white mt-4 text-center">{pokemon.name}</h2>
             <hr className="custom-hr-x" />
             
             {/* Statlar Kısmı */}

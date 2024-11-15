@@ -241,15 +241,15 @@ function PokemonList({ searchParams }) {
         )}
         <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 mt-28 md:grid-cols-2 gap-10">
           {filteredPokemon.map((pokemon, index) => (
-            <li key={index} className="relative hover:scale-105  active:scale-95 active:shadow-red-900 transition-transform">
+            <li key={index} className="relative hover:scale-105   active:scale-95 active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                <div className="flex flex-col items-center justify-center bg-gradient-to-tr  from-zinc-800 via-zinc-500  rounded-3xl shadow-2xl">
-                  <span className="text-white bg-zinc-800 px-4 rounded-2xl bg-opacity-35 font-bold text-xl mt-8 capitalize">{pokemon.name}</span>
-                  <Image src={pokemon.image} alt={pokemon.name} width={176} height={176} className="mt-2 object-contain" />
+                <div className="flex flex-col items-center justify-center bg-gradient-to-tr   from-zinc-800 via-zinc-500  rounded-3xl shadow-2xl">
+                  <span className="text-white bg-zinc-800 px-4   rounded-2xl bg-opacity-35 font-bold text-md mt-8 capitalize">{pokemon.name}</span>
+                  <Image src={pokemon.image} alt={pokemon.name} width={155} height={145} className="mt-2 object-contain" />
                   <div className="flex space-x-4 m-4 items-center">
                     {pokemon.types.map((type) => (
                       <div key={type} onClick={() => handleTypeClick(type)} className="flex flex-col items-center cursor-pointer">
-                        <Image src={typeImages[type]} alt={type} width={40} height={40} />
+                        <Image src={typeImages[type]} alt={type} width={35} height={35} />
                         <span className="text-sm text-white capitalize">{type}</span>
                       </div>
                     ))}

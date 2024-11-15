@@ -1,9 +1,9 @@
 import "./globals.css";
 import Header from "@/components/Header";
-import { Inter } from 'next/font/google'
+import { Varela_Round } from 'next/font/google'
 
-const inter = Inter({
-  weight: ['500', '700'],
+const inter = Varela_Round({
+  weight: ['400', '400'],
   style: [ 'normal'],
   subsets: ['latin'],
   display: 'swap',
