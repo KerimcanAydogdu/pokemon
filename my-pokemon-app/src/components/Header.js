@@ -79,7 +79,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-            <Link href="/power" onClick={() => setIsMenuOpen(false)} className="block hover:bg-gradient-to-br from-yellow-500  to-blue-950 p-3 rounded-lg transition-all">
+            <Link href="/champion" onClick={() => setIsMenuOpen(false)} className="block hover:bg-gradient-to-br from-yellow-500  to-blue-950 p-3 rounded-lg transition-all">
               Şampiyonlar
           </Link>
             </li>
