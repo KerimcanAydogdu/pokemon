@@ -107,11 +107,13 @@ function PokemonList({ searchParams }) {
         // Pokémonları yeniden alıyoruz.
         const data = await getAllPokemon(0, 1025);
   
-        // Fuzzy matching: searchTerm içinde geçen benzer Pokémon isimlerini alıyoruz
+        // Fuzzy matching (kapsamlı eşleşme): searchTerm içinde geçen Pokémon isimlerini alıyoruz
         const searchResults = data.results.filter((pokemon) => {
           const name = pokemon.name.toLowerCase();
-          // Herhangi bir harfi içerip içermediğini kontrol ediyoruz.
-          return name.includes(searchTerm.toLowerCase()) || fuzzyMatch(name, searchTerm.toLowerCase());
+          const term = searchTerm.toLowerCase();
+          
+          // Eğer ismin içinde her karakterin sırasını göz önünde bulundurup buluyorsa
+          return term.split('').every(char => name.includes(char));
         });
   
         // Detayları alıyoruz
@@ -136,16 +138,6 @@ function PokemonList({ searchParams }) {
     }
   }
   
-  // Fuzzy matching fonksiyonu: searchTerm içinde geçen harflerin sırasını göz önünde bulunduruyor.
-  function fuzzyMatch(name, searchTerm) {
-    let j = 0;
-    for (let i = 0; i < name.length && j < searchTerm.length; i++) {
-      if (name[i] === searchTerm[j]) {
-        j++;
-      }
-    }
-    return j === searchTerm.length;
-  }
   
 
   const handleCancelSearch = () => {
