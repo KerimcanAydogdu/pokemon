@@ -52,374 +52,119 @@ body {
 }
 /* Grass (Çim) */
 .grass-effect {
-  animation: grass-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 15px rgba(34, 139, 34, 0.5), inset 0 0 20px rgba(0, 255, 127, 0.6);
 }
 
-@keyframes grass-animation {
-  0% {
-    background-color: #228B22; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #7CFC00; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #006400; /* Bitiş Rengi */
-  }
-}
-
 /* Poison (Zehir) */
 .poison-effect {
-  animation: poison-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 15px rgba(138, 43, 226, 0.5), inset 0 0 15px rgba(153, 50, 204, 0.6);
-}
-
-@keyframes poison-animation {
-  0% {
-    background-color: #8A2BE2; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #9932CC; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #4B0082; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.5), inset 0 0 20px rgba(153, 50, 204, 0.6);
 }
 
 /* Fire (Ateş) */
 .fire-effect {
-  animation: fire-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.8);
-}
-
-@keyframes fire-animation {
-  0% {
-    background-color: #FF4500; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #FF6347; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #8B0000; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 20px rgba(255, 140, 0, 0.8);
 }
 
 /* Water (Su) */
 .water-effect {
-  animation: water-animation 3.5s ease-in-out infinite;
   background-size: cover;
   box-shadow: 0 0 15px rgba(0, 191, 255, 0.5), inset 0 0 20px rgba(0, 140, 255, 0.7);
 }
 
-@keyframes water-animation {
-  0% {
-    background-color: #1E90FF; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #00BFFF; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #4682B4; /* Bitiş Rengi */
-  }
-}
-
 /* Flying (Uçan) */
 .flying-effect {
-  animation: flying-animation 3.5s infinite;
   background-size: cover;
   box-shadow: 0 0 15px rgba(135, 206, 250, 0.6), inset 0 0 20px rgba(176, 224, 230, 0.7);
 }
 
-@keyframes flying-animation {
-  0% {
-    background-color: #87CEEB; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #00BFFF; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #4682B4; /* Bitiş Rengi */
-  }
-}
-
 /* Bug (Böcek) */
 .bug-effect {
-  animation: bug-animation 3.5s infinite;
   background-size: cover;
-  box-shadow: 0 0 10px rgba(50, 205, 50, 0.6), inset 0 0 15px rgba(34, 139, 34, 0.7);
-}
-
-@keyframes bug-animation {
-  0% {
-    background-color: #32CD32; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #7CFC00; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #006400; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 10px rgba(50, 205, 50, 0.6), inset 0 0 20px rgba(34, 139, 34, 0.7);
 }
 
 /* Normal */
 .normal-effect {
-  animation: normal-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 15px rgba(128, 128, 128, 0.6), inset 0 0 10px rgba(192, 192, 192, 0.5);
-}
-
-@keyframes normal-animation {
-  0% {
-    background-color: #808080; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #A9A9A9; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #696969; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 25px rgba(90, 90, 90, 0.952), inset 0 0 20px rgba(192, 192, 192, 0.5);
 }
 
 /* Electric (Elektrik) */
 .electric-effect {
-  animation: electric-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 30px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 255, 255, 0.8);
-}
-
-@keyframes electric-animation {
-  0% {
-    background-color: #FFFF00; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #FFD700; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #FF6347; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 20px rgba(255, 255, 0, 1), inset 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 /* Ground (Yer) */
 .ground-effect {
-  animation: ground-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 15px rgba(160, 82, 45, 0.7), inset 0 0 20px rgba(210, 180, 140, 0.6);
 }
 
-@keyframes ground-animation {
-  0% {
-    background-color: #A0522D; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #D2691E; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #8B4513; /* Bitiş Rengi */
-  }
-}
-
 /* Fairy (Peri) */
 .fairy-effect {
-  animation: fairy-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 25px rgba(255, 192, 203, 0.5), inset 0 0 15px rgba(255, 182, 193, 0.7);
-}
-
-@keyframes fairy-animation {
-  0% {
-    background-color: #FFC0CB; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #FFB6C1; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #FF69B4; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 25px rgba(255, 192, 203, 0.5), inset 0 0 20px rgba(255, 182, 193, 0.7);
 }
 
 /* Fighting (Dövüş) */
 .fighting-effect {
-  animation: fighting-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 25px rgba(255, 69, 0, 0.6), inset 0 0 15px rgba(255, 0, 0, 0.7);
-}
-
-@keyframes fighting-animation {
-  0% {
-    background-color: #FF0000; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #B22222; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #8B0000; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 25px rgba(255, 69, 0, 0.6), inset 0 0 20px rgba(255, 0, 0, 0.7);
 }
 
 /* Psychic (Psişik) */
 .psychic-effect {
-  animation: psychic-animation 3.5s infinite;
   background-size: cover;
-  box-shadow: 0 0 20px rgba(255, 20, 147, 0.7), inset 0 0 25px rgba(255, 105, 180, 0.6);
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.7), inset 0 0 20px rgba(255, 105, 180, 0.6);
 }
 
-@keyframes psychic-animation {
-  0% {
-    background-color: #FF1493; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #FF69B4; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #C71585; /* Bitiş Rengi */
-  }
-}
-
+/* Ice (Buz) */
 .ice-effect {
-  animation: ice-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 25px rgba(0, 191, 255, 0.7), inset 0 0 30px rgba(70, 130, 180, 0.8);
 }
 
-@keyframes ice-animation {
-  0% {
-    background-color: #00BFFF; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #87CEFA; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #4682B4; /* Bitiş Rengi */
-  }
-}
-
 /* Rock (Taş) */
 .rock-effect {
-  animation: rock-animation 3.5s infinite alternate;
   background-size: cover;
   box-shadow: 0 0 20px rgba(169, 169, 169, 0.7), inset 0 0 20px rgba(128, 128, 128, 0.6);
 }
 
-@keyframes rock-animation {
-  0% {
-    background-color: #A9A9A9; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #BEBEBE; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #808080; /* Bitiş Rengi */
-  }
-}
-
 /* Ghost (Hayalet) */
 .ghost-effect {
-  animation: ghost-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 20px rgba(128, 0, 128, 0.7), inset 0 0 30px rgba(186, 85, 211, 0.6);
-}
-
-@keyframes ghost-animation {
-  0% {
-    background-color: #800080; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #DA70D6; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #4B0082; /* Bitiş Rengi */
-  }
-}
-
-/* Steel (Çelik) */
-.steel-effect {
-  animation: steel-animation 3.5s infinite alternate;
-  background-size: cover;
-  box-shadow: 0 0 30px rgba(169, 169, 169, 0.7), inset 0 0 25px rgba(105, 105, 105, 0.8);
-}
-
-@keyframes steel-animation {
-  0% {
-    background-color: #A9A9A9; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #B0C4DE; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #696969; /* Bitiş Rengi */
-  }
-}
-
-/* Dark (Karanlık) */
-.dark-effect {
-  animation: dark-animation 3.5s infinite alternate;
-  background-size: cover;
-  box-shadow: 0 0 40px rgba(47, 79, 79, 0.6), inset 0 0 30px rgba(0, 0, 0, 0.7);
-}
-
-@keyframes dark-animation {
-  0% {
-    background-color: #2F4F4F; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #696969; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #000000; /* Bitiş Rengi */
-  }
+  box-shadow: 0 0 20px rgba(128, 0, 128, 0.7), inset 0 0 25px rgba(75, 0, 130, 0.6);
 }
 
 /* Dragon (Ejderha) */
 .dragon-effect {
-  animation: dragon-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 0 30px rgba(255, 69, 0, 0.7);
+  box-shadow: 0 0 25px rgba(75, 0, 130, 0.7), inset 0 0 25px rgba(138, 43, 226, 0.6);
 }
 
-@keyframes dragon-animation {
-  0% {
-    background-color: #FF0000; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #DC143C; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #8B0000; /* Bitiş Rengi */
-  }
+/* Steel (Çelik) */
+.steel-effect {
+  background-size: cover;
+  box-shadow: 0 0 20px rgba(119, 136, 153, 0.7), inset 0 0 20px rgba(176, 196, 222, 0.6);
 }
-.bg-rainbow {
-  background: linear-gradient(to bottom right, rgb(185, 0, 0),  #cec000de, #00a396c2, rgba(0, 0, 180, 0.678) );
-}
-
 
 /* Dark (Karanlık) */
 .dark-effect {
-  animation: dark-animation 3.5s infinite alternate;
   background-size: cover;
-  box-shadow: 0 0 30px rgba(47, 79, 79, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(50, 50, 50, 0.7);
 }
 
-@keyframes dark-animation {
-  0% {
-    background-color: #2F4F4F; /* Başlangıç Rengi */
-  }
-  50% {
-    background-color: #696969; /* Ara Geçiş Rengi */
-  }
-  100% {
-    background-color: #000000; /* Bitiş Rengi */
-  }
-}
 .custom-hr-x {
   border: 0;
   height: 3px;  /* Çizginin yüksekliği */
   background: linear-gradient(to right, 
-    rgba(255, 255, 255, 0) 0%,   /* Sol kenar: şeffaf */
-    rgba(255, 255, 255, 1) 50%,  /* Ortada: tam opak */
-    rgba(255, 255, 255, 0) 100%  /* Sağ kenar: şeffaf */
+  rgba(255, 255, 255, 0) 0%,   /* Sol kenar: şeffaf */
+  rgba(255, 255, 255, 1) 50%,  /* Ortada: tam opak */
+  rgba(255, 255, 255, 0) 100%  /* Sağ kenar: şeffaf */
   );
   margin: 20px 0;
 }
@@ -430,5 +175,9 @@ body {
     rgba(255, 255, 255, 0) 0%,   /* Üst kenar: şeffaf */
     rgba(255, 255, 255, 1) 50%,  /* Ortada: tam opak */
     rgba(255, 255, 255, 0) 100%  /* Alt kenar: şeffaf */
-  );
-}
+    );
+  }
+  
+  .bg-rainbow {
+    background: linear-gradient(to bottom right, rgb(185, 0, 0),  #cec000de, #00a396c2, rgba(0, 0, 180, 0.678) );
+  }

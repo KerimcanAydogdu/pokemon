@@ -137,9 +137,9 @@ export default function PokemonPage() {
   };
 
   return (
-    <div className="relative pt-12 overflow-hidden">
-      <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
-      <section className="relative p-10 z-10 pb-3 md:p-28 text-center text-white mt-52 md:mt-32">
+<div className="relative pt-12 overflow-hidden bg-gray-900">
+      <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-md" />
+      <section className="relative p-8 md:p-28 text-center text-white mt-32 md:mt-16 z-10">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <img src="/loader.gif" alt="Yükleniyor..." className="w-40 h-40" />
@@ -148,42 +148,37 @@ export default function PokemonPage() {
 
         {pokemonList.length === 0 && !loading && (
           <div className="flex flex-col items-center">
-            <p className="text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
+            <p className="text-3xl md:text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {sortedTypesByAvgStat.map(({ type, avgStat }) => (
-            <div key={type} className="p-4 ">
+            <div key={type} className="px-4 lg:px-20 py-4">
               <h2
-                className={`text-2xl cursor-pointer font-bold border rounded-xl border-white ${getTypeEffect(type)}`}
+                className={`text-2xl cursor-pointer bg-zinc-950 bg-opacity-55 font-semibold py-2 rounded-lg transition transform hover:scale-105 ${getTypeEffect(type)}`}
                 onClick={() => handleTypeClick(type)}
               >
                 {type.toUpperCase()} - {Math.round(avgStat)}
               </h2>
               <div className="flex flex-wrap justify-center gap-5 mt-5">
-                {topPokemonByType[type].map((pokemon, index) => {
-                  const averageStat = calculateAverageStat(pokemon.stats);
-                  return (
-                    <div key={index} className="relative hover:scale-110 active:scale-95 mt-7 rounded-3xl transition-transform border-2 border-white">
-                      <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                        <div className={`rounded-3xl shadow-2xl p-4 ${getTypeEffect(type)}`}>
-                          <div className="flex justify-between items-start">
-                            <div className="flex flex-col mr-2 items-center">
-                              <div className="w-9 h-9 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
-                                {averageStat}
-                              </div>
-                            </div>
-                            <div className="flex-auto flex justify-center items-center">
-                              <Image className="w-32 h-32" src={pokemon.image} width={250} height={200} alt={pokemon.name} />
+                {topPokemonByType[type].map((pokemon, index) => (
+                  <div key={index} className="group relative transition-transform hover:scale-105 rounded-xl shadow-lg border border-gray-800 hover:border-white">
+                    <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
+                      <div className={`rounded-xl p-4  group-hover:shadow-xl ${getTypeEffect(type)}`}>
+                        <div className="flex justify-between items-start">
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 rounded-full bg-gray-700 flex justify-center items-center text-white font-bold">
+                              {calculateAverageStat(pokemon.stats)}
                             </div>
                           </div>
-                          <h2 className="text-xl font-bold text-white mt-4 text-center">{pokemon.name}</h2>
+                          <Image src={pokemon.image} width={100} height={100} alt={pokemon.name} className="w-28 h-28 object-cover rounded-md"/>
                         </div>
-                      </Link>
-                    </div>
-                  );
-                })}
+                        <h2 className="text-lg font-semibold text-white mt-4 text-center">{pokemon.name}</h2>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

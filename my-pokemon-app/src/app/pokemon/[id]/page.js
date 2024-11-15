@@ -91,7 +91,7 @@ export default async function PokemonDetailPage({ params }) {
       height={96} 
       className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm " />
 
-      <section className="relative z-10 p-2 max-w-7xl min-h-screen mx-auto mt-52">
+      <section className="relative z-10 p-2 max-w-7xl  mx-auto mt-52">
         <div className="flex items-center justify-between bg-white bg-opacity-30 p-4 rounded-md backdrop-blur-md">
           <h1 className="text-4xl text-white capitalize tracking-wide">
             {pokemon.name} <span className="text-gray-800">#{pokemon.id.toString().padStart(3, '0')}</span>
@@ -167,7 +167,7 @@ export default async function PokemonDetailPage({ params }) {
             </div>
           </div>
         </div>
-        <div className="text-center mt-10">
+        <div className="text-center mt-10 mb-5">
           <Link href="/pokemon" className="inline-block px-6 py-3 btn">
             Listeye Geri Dön
           </Link>

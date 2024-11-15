@@ -130,7 +130,6 @@ export default function PokemonPage({ searchParams }) {
     else if (color > 100) {
       return "bg-rainbow";
     }
-    
     else{
       return "bg-gradient-to-br from-yellow-600";
     }
@@ -146,7 +145,7 @@ export default function PokemonPage({ searchParams }) {
     <div className="relative pt-12 overflow-hidden min-h-screen">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
 
-      <section className="relative p-12 z-10 pb-3 md:p-20 text-center to- text-white mt-52 md:mt-32">
+      <section className="relative p-12 z-10 pb-3 md:p-20 text-center  text-white mt-52 md:mt-32">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <img src="/loader.gif" alt="Yükleniyor..." className="w-40 h-40" />
@@ -164,7 +163,7 @@ export default function PokemonPage({ searchParams }) {
     const averageStat = calculatecolors(pokemon.stats);
     const statColor = getStatColor(averageStat);
     return (
-      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-all border border-white" >
+      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-all border-2 border-white" >
         <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
           <div className={`${statColor} rounded-3xl shadow-2xl p-4`}>
             <div className="flex justify-between items-start">

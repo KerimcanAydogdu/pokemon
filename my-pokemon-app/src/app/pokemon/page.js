@@ -102,21 +102,31 @@ function PokemonList({ searchParams }) {
     if (searchTerm.length >= 3 || filterType) {
       setIsSearchTriggered(true);
       setLoading(true);
-
+  
       try {
+        // Pokémonları yeniden alıyoruz.
         const data = await getAllPokemon(0, 1025);
-        const searchResults = data.results.filter((pokemon) =>
-          pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  
+        // Fuzzy matching: searchTerm içinde geçen benzer Pokémon isimlerini alıyoruz
+        const searchResults = data.results.filter((pokemon) => {
+          const name = pokemon.name.toLowerCase();
+          // Herhangi bir harfi içerip içermediğini kontrol ediyoruz.
+          return name.includes(searchTerm.toLowerCase()) || fuzzyMatch(name, searchTerm.toLowerCase());
+        });
+  
+        // Detayları alıyoruz
         const searchDetails = await Promise.all(
           searchResults.map(async (pokemon) => {
             const details = await getPokemonDetails(pokemon.url);
             return { ...pokemon, ...details };
           })
         );
+  
+        // Tür filtresi uygularsak, türleri de filtreliyoruz.
         const filteredResults = filterType
           ? searchDetails.filter((pokemon) => pokemon.types.includes(filterType))
           : searchDetails;
+  
         setFilteredPokemon(filteredResults);
       } catch (err) {
         console.error("Error fetching search data:", err);
@@ -125,6 +135,18 @@ function PokemonList({ searchParams }) {
       }
     }
   }
+  
+  // Fuzzy matching fonksiyonu: searchTerm içinde geçen harflerin sırasını göz önünde bulunduruyor.
+  function fuzzyMatch(name, searchTerm) {
+    let j = 0;
+    for (let i = 0; i < name.length && j < searchTerm.length; i++) {
+      if (name[i] === searchTerm[j]) {
+        j++;
+      }
+    }
+    return j === searchTerm.length;
+  }
+  
 
   const handleCancelSearch = () => {
     setSearchTerm("");
@@ -162,16 +184,27 @@ function PokemonList({ searchParams }) {
 
       <section className="relative p-10 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
         <div className="flex flex-col lg:flex-row mb-24 relative w-full md:w-3/6 mx-auto space-y-4 lg:space-y-0 md:space-x-1">
-          <input
-            type="text"
-            placeholder="Bir Pokemon Ara..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
-          />
+        <input
+  type="text"
+  placeholder="Bir Pokemon Ara..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  }}
+  className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
+/>
+
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
             className=" py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center lg:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
           >
             <option value="">Tür Filtrele</option>
@@ -210,10 +243,10 @@ function PokemonList({ searchParams }) {
         )}
         <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-10">
           {filteredPokemon.map((pokemon, index) => (
-            <li key={index} className="relative hover:scale-105 active:scale-95 active:shadow-red-900 transition-transform">
+            <li key={index} className="relative hover:scale-105  active:scale-95 active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
-                <div className="flex flex-col items-center justify-center bg-gradient-to-tr from-zinc-600 rounded-3xl shadow-2xl">
-                  <span className="text-white bg-zinc-800 w-52 rounded-2xl bg-opacity-35 font-bold text-xl mt-8 capitalize">{pokemon.name}</span>
+                <div className="flex flex-col items-center justify-center bg-gradient-to-tr  from-zinc-600 rounded-3xl shadow-2xl">
+                  <span className="text-white bg-zinc-800 px-4 rounded-2xl bg-opacity-35 font-bold text-xl mt-8 capitalize">{pokemon.name}</span>
                   <Image src={pokemon.image} alt={pokemon.name} width={176} height={176} className="mt-2 object-contain" />
                   <div className="flex space-x-4 m-4 items-center">
                     {pokemon.types.map((type) => (
@@ -228,7 +261,7 @@ function PokemonList({ searchParams }) {
             </li>
           ))}
         </ul>
-
+        {!isSearchTriggered && filteredPokemon.length > 0 && (
         <div className="flex justify-center items-center space-x-4 mt-16">
             <Link href={`?page=${page - 1}`} className={`text-3xl ${page === 1 && "hidden"} text-yellow-400`}>
               <FaChevronLeft />
@@ -246,6 +279,7 @@ function PokemonList({ searchParams }) {
               <FaChevronRight />
             </Link>
           </div>
+                  )}
       </section>
     </div>
   );
