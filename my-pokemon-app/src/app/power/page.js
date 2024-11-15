@@ -164,11 +164,10 @@ export default function PokemonPage({ searchParams }) {
     const averageStat = calculatecolors(pokemon.stats);
     const statColor = getStatColor(averageStat);
     return (
-      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-transform border border-white" >
+      <div key={index} className="relative hover:scale-105 active:scale-95 rounded-3xl transition-all border border-white" >
         <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
           <div className={`${statColor} rounded-3xl shadow-2xl p-4`}>
             <div className="flex justify-between items-start">
-              {/* Stat ve Tipler Kısmı */}
               <div className="flex flex-col mr-2 items-center">
                 <div className="w-9 h-9 rounded-full bg-zinc-700 flex justify-center items-center text-white font-semibold">
                   {averageStat}
@@ -200,8 +199,8 @@ export default function PokemonPage({ searchParams }) {
             <hr className="custom-hr-x" />
             
             {/* Statlar Kısmı */}
-            <div className="flex gap-4 mb-2">
-       <div className="text-white w-full pl-1">
+            <div className="flex gap-2 mb-2">
+       <div className="text-white w-full">
          <ul className="space-y-1 mx-2">
          <li className="flex justify-between">
              <span>ATK:</span>

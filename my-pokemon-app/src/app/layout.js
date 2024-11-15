@@ -1,10 +1,9 @@
-import localFont from "next/font/local";
-import "./globals.css"; // Make sure your global CSS styles are defined here
+import "./globals.css";
 import Header from "@/components/Header";
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
-  weight: ['400', '700'],
+  weight: ['500', '700'],
   style: [ 'normal'],
   subsets: ['latin'],
   display: 'swap',

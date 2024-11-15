@@ -1,15 +1,14 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaChevronLeft, FaChevronRight, FaSearch, FaTimes } from "react-icons/fa";
 
 const ITEMS_PER_PAGE = 24;
-const TOTAL_POKEMON = 1025; // Toplam Pokémon sayısı
+const TOTAL_POKEMON = 1025;
 
-// Pokémon türleri için resimler ve tür listesi
+// Tip görselleri
 const typeImages = {
   grass: "/grass.png",
   poison: "/poison.png",
@@ -30,7 +29,8 @@ const typeImages = {
   steel: "/steel.png",
   dark: "/dark.png",
 };
-const typeOptions = Object.keys(typeImages); // Filtreleme için tür listesi
+
+const typeOptions = Object.keys(typeImages);
 
 async function getAllPokemon(offset, limit = ITEMS_PER_PAGE) {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
@@ -53,18 +53,19 @@ async function getPokemonDetails(url) {
   };
 }
 
-export default function PokemonPage({ searchParams }) {
+function PokemonList({ searchParams }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState(""); // Seçili tür filtresi
+  const [filterType, setFilterType] = useState("");
   const [isSearchTriggered, setIsSearchTriggered] = useState(false);
-  const router = useRouter();
-  const searchParamsFromUrl = useSearchParams();
 
-  const page = parseInt(searchParamsFromUrl.get("page") || "1", 10);
-  const filterTypeFromUrl = searchParamsFromUrl.get("type");
+  const router = useRouter();
+  const searchParamsObj = useSearchParams();
+
+  const page = parseInt(searchParamsObj.get("page") || "1", 10);
+  const filterTypeFromUrl = searchParamsObj.get("type");
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const totalPages = Math.ceil(TOTAL_POKEMON / ITEMS_PER_PAGE);
 
@@ -100,7 +101,7 @@ export default function PokemonPage({ searchParams }) {
   async function handleSearch() {
     if (searchTerm.length >= 3 || filterType) {
       setIsSearchTriggered(true);
-      setLoading(true); // Yükleme başlatıldı
+      setLoading(true);
 
       try {
         const data = await getAllPokemon(0, 1025);
@@ -120,7 +121,7 @@ export default function PokemonPage({ searchParams }) {
       } catch (err) {
         console.error("Error fetching search data:", err);
       } finally {
-        setLoading(false); // Yükleme tamamlandı
+        setLoading(false);
       }
     }
   }
@@ -134,8 +135,8 @@ export default function PokemonPage({ searchParams }) {
   };
 
   const handleTypeClick = (type) => {
-    setFilterType(type); // Seçili türü güncelle
-    router.push(`/pokemon?page=1&type=${type}`); // URL'yi güncelle
+    setFilterType(type);
+    router.push(`/pokemon?page=1&type=${type}`);
   };
 
   const getPageNumbers = (currentPage, totalPages) => {
@@ -171,7 +172,7 @@ export default function PokemonPage({ searchParams }) {
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className=" py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center md:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
+            className=" py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center lg:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
           >
             <option value="">Tür Filtrele</option>
             {typeOptions.map((type) => (
@@ -207,7 +208,7 @@ export default function PokemonPage({ searchParams }) {
             <p className="text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
           </div>
         )}
-        <ul className="grid grid-cols-1 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-2 gap-10">
+        <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-10">
           {filteredPokemon.map((pokemon, index) => (
             <li key={index} className="relative hover:scale-105 active:scale-95 active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
@@ -228,36 +229,31 @@ export default function PokemonPage({ searchParams }) {
           ))}
         </ul>
 
-        <div className="flex justify-center mt-8 space-x-6">
-          <button
-            onClick={() => router.push(`/pokemon?page=${page - 1}`)}
-            disabled={page === 1}
-            className={`px-6 py-2 ${page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white rounded-full shadow-xl hover:bg-blue-600 transition"}`}
-          >
-            <FaChevronLeft />
-          </button>
-
-          {pageNumbers.map((pageNumber) => (
-            <Link key={pageNumber} href={`/pokemon?page=${pageNumber}`} passHref>
-              <button
-                className={`px-6 py-2 ${
-                  page === pageNumber ? "bg-blue-500 text-white" : "bg-gray-300"
-                } rounded-full shadow-xl hover:bg-blue-600 transition`}
-              >
-                {pageNumber}
-              </button>
+        <div className="flex justify-center items-center space-x-4 mt-16">
+            <Link href={`?page=${page - 1}`} className={`text-3xl ${page === 1 && "hidden"} text-yellow-400`}>
+              <FaChevronLeft />
             </Link>
-          ))}
-
-          <button
-            onClick={() => router.push(`/pokemon?page=${page + 1}`)}
-            disabled={page === totalPages}
-            className={`px-6 py-2 ${page === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white rounded-full shadow-xl hover:bg-blue-600 transition"}`}
-          >
-            <FaChevronRight />
-          </button>
-        </div>
+            {pageNumbers.map((pageNum) => (
+              <Link
+                key={pageNum}
+                href={`?page=${pageNum}`}
+                className={`text-lg font-semibold ${pageNum === page ? "bg-yellow-500 px-2 py-2" : "hover:text-yellow-400"} rounded-lg`}
+              >
+                {pageNum}
+              </Link>
+            ))}
+            <Link href={`?page=${page + 1}`} className={`text-3xl ${page === totalPages && "hidden"} text-yellow-400`}>
+              <FaChevronRight />
+            </Link>
+          </div>
       </section>
     </div>
+  );
+}
+export default function PokemonPage({ searchParams }) {
+  return (
+    <Suspense fallback={<div>Yükleniyor...</div>}>
+      <PokemonList searchParams={searchParams} />
+    </Suspense>
   );
 }

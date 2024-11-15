@@ -91,7 +91,7 @@ export default async function PokemonDetailPage({ params }) {
       height={96} 
       className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm " />
 
-      <section className="relative z-10 p-10 max-w-7xl mx-auto mt-52">
+      <section className="relative z-10 p-2 max-w-7xl min-h-screen mx-auto mt-52">
         <div className="flex items-center justify-between bg-white bg-opacity-30 p-4 rounded-md backdrop-blur-md">
           <h1 className="text-4xl text-white capitalize tracking-wide">
             {pokemon.name} <span className="text-gray-800">#{pokemon.id.toString().padStart(3, '0')}</span>
@@ -103,7 +103,7 @@ export default async function PokemonDetailPage({ params }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 rounded-lg">
           <div className="relative">
-            <div className={`rounded-full w-80 h-80 xl:w-96 xl:h-96 mx-auto flex items-center justify-center bg-opacity-60 ${backgroundColor}`}>
+            <div className={`rounded-full w-64 h-64 xl:w-96 xl:h-96 mx-auto flex items-center justify-center bg-opacity-60 ${backgroundColor}`}>
               <img
                 src={pokemon.sprites.other["official-artwork"].front_default}
                 alt={pokemon.name}
@@ -130,7 +130,7 @@ export default async function PokemonDetailPage({ params }) {
 
             <div className="space-y-1 mt-5">
               {['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].map((stat, index) => (
-                <div key={index} className="flex items-center">
+                <div key={index} className="flex items-center justify-center">
                   <span className="text-gray-100 text-lg capitalize w-36 ">{stat.replace('-',' ')}</span>
                   <div className="w-60 bg-gray-300 rounded-full h-3 overflow-hidden">
                     <div
