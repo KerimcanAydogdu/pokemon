@@ -148,12 +148,21 @@ function PokemonList({ searchParams }) {
   const handleSearch = () => {
     if (searchTerm.length < 3) {
       setErrorMessage("Arama yapabilmek için en az 3 harf giriniz.");
-      setTimeout(() => setErrorMessage(""), 4000);
+      document.body.style.overflow = "hidden"; // Scroll'u devre dışı bırak
+      
+      setTimeout(() => {
+        setErrorMessage("");
+        document.body.style.overflow = ""; // Scroll'u yeniden aktif hale getir
+      }, 2500);
+      
       return;
     }
+  
     setErrorMessage("");
+    document.body.style.overflow = ""; // Scroll'u varsayılan duruma getir
     filterPokemons();
   };
+  
   const shouldHidePagination = searchTerm || filterType;
 
   return (
