@@ -253,4 +253,10 @@ function PokemonList({ searchParams }) {
   );
 }
 
-export default PokemonList;
+export default function PokemonPage({ searchParams }) {
+  return (
+    <Suspense fallback={<div>Yükleniyor...</div>}>
+      <PokemonList searchParams={searchParams} />
+    </Suspense>
+  );
+}
