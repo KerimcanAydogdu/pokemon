@@ -221,7 +221,7 @@ function PokemonList({ searchParams }) {
 
 {/* Eğer searchTerm veya filterType varsa ve butona basılmışsa, mesajı göster */}
 {(searchTerm || filterType) && !isSearchTriggered && (
-  <p className="text-sm text-red-800 lg:text-lg lg:text-red-400 mt-3">
+  <p className="text-sm text-rose-400 lg:text-lg mt-3">
     ! Arama ve filtreleme işleminden sonra butona basınız.
   </p>
 )}

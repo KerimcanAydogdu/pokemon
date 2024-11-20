@@ -119,17 +119,17 @@ export default function PokemonPage({ searchParams }) {
 
   const getStatColor = (color) => {
     if (color < 41) {
-      return "bg-gradient-to-br from-slate-950 via-gray-500 to-slate-900 "; // gri
+      return "bg-gradient-to-br from-slate-950 via-gray-500 to-slate-900 ";
     } else if (color < 56) {
-      return "bg-gradient-to-br from-emerald-950 via-green-700 to-lime-950 "; // yeşil
+      return "bg-gradient-to-br from-emerald-950 via-green-700 to-lime-950 ";
     } else if (color < 71) {
-      return "bg-gradient-to-br from-indigo-950 via-blue-900 to-slate-950 "; // mavi
+      return "bg-gradient-to-br from-indigo-950 via-blue-900 to-slate-950 ";
     } else if (color < 81) {
-      return "bg-gradient-to-br from-slate-900 via-purple-800 to-pink-900 "; // kırmızı (daha canlı renkler)
+      return "bg-gradient-to-br from-slate-900 via-purple-800 to-pink-900 ";
     } else if (color < 86) {
-      return "bg-gradient-to-br from-slate-950 via-rose-600 to-blue-950 "; // mor (daha zengin tonlar)
+      return "bg-gradient-to-br from-slate-950 via-rose-600 to-fuchsia-900 ";
     } else if (color < 100) {
-      return "bg-gradient-to-br from-fuchsia-900 via-pink-600 to-yellow-600 "; // ihtişamlı renk geçişi (canlı ve dikkat çekici)
+      return "bg-gradient-to-br from-fuchsia-800 via-pink-600 to-yellow-600 ";
     }
      else if (color == 100) {
       return "bg-gradient-to-br from-red-900 via-yellow-500 to-rose-900 ";
@@ -222,7 +222,7 @@ export default function PokemonPage({ searchParams }) {
            </li>
          </ul>
        </div>
-  <div class="custom-hr-y ml-2"></div>
+  <div className="custom-hr-y ml-2"></div>
   <div className="text-white w-full pl-1">
     <ul className="space-y-1 mx-2">
       <li className="flex justify-between">

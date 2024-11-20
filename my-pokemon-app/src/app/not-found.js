@@ -4,13 +4,13 @@ import Link from 'next/link';
 export default function NotFound() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      <div className="sm:hidden">
+      <div className="md:hidden">
         <Image src="/4044.jpg" alt="404 Mobile"
           width={1000}
           height={96}
           className="absolute inset-0 w-full h-full object-cover z-0 brightness-50" />
       </div>
-      <div className="hidden sm:block">
+      <div className="hidden md:block">
         <Image src="/404.jpg" alt="404 Desktop"
           width={1000}
           height={96}
