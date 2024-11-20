@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Image from "next/image";
+import { Pagination } from "@nextui-org/react";
 
 const ITEMS_PER_PAGE = 24;
 const TOTAL_POKEMON = 1000;
@@ -87,29 +87,7 @@ export default function PokemonPage({ searchParams }) {
     fetchData();
   }, [searchParams]);
 
-  const getPageNumbers = (currentPage, totalPages) => {
-    const pageNumbers = [];
-    const range = 2; // Aralık (örneğin, 1, 5, 12, 25... şeklinde)
-    
-    // İlk sayfayı ekle
-    pageNumbers.push(1);
 
-    // Önceki sayfa numaralarını ekle
-    for (let i = currentPage - range; i <= currentPage + range; i++) {
-      if (i > 1 && i < totalPages && !pageNumbers.includes(i)) {
-        pageNumbers.push(i);
-      }
-    }
-
-    // Son sayfayı ekle
-    if (!pageNumbers.includes(totalPages)) {
-      pageNumbers.push(totalPages);
-    }
-
-    return pageNumbers;
-  };
-
-  const pageNumbers = getPageNumbers(page, totalPages);
 
   const calculatecolors = (stats) => {
     const values = Object.values(stats);
@@ -251,21 +229,13 @@ export default function PokemonPage({ searchParams }) {
 
 {!loading && pokemonList.length > 0 && (
           <div className="flex justify-center items-center space-x-4 mt-16">
-            <Link href={`?page=${page - 1}`} className={`text-3xl ${page === 1 && "hidden"} text-yellow-400`}>
-              <FaChevronLeft />
-            </Link>
-            {pageNumbers.map((pageNum) => (
-              <Link
-                key={pageNum}
-                href={`?page=${pageNum}`}
-                className={`text-lg font-semibold ${pageNum === page ? "bg-yellow-500 px-2 py-2" : "hover:text-yellow-400"} rounded-lg`}
-              >
-                {pageNum}
-              </Link>
-            ))}
-            <Link href={`?page=${page + 1}`} className={`text-3xl ${page === totalPages && "hidden"} text-yellow-400`}>
-              <FaChevronRight />
-            </Link>
+          <Pagination
+            color="warning"
+            size="sm"
+            total={totalPages}
+            initialPage={page}
+            onChange={(page) => window.location.href = `?page=${page}`}
+          />
           </div>
         )}
       </section>

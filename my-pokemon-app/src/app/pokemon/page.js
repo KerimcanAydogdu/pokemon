@@ -3,7 +3,8 @@ import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FaChevronLeft, FaChevronRight, FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
+import { Pagination } from "@nextui-org/react";
 
 const ITEMS_PER_PAGE = 24;
 const TOTAL_POKEMON = 1025;
@@ -58,8 +59,9 @@ function PokemonList({ searchParams }) {
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState(""); // Tek bir filtre tipi state
   const [isSearchTriggered, setIsSearchTriggered] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
   const searchParamsObj = useSearchParams();
@@ -70,6 +72,11 @@ function PokemonList({ searchParams }) {
   const totalPages = Math.ceil(TOTAL_POKEMON / ITEMS_PER_PAGE);
 
   useEffect(() => {
+    // URL'den gelen filtreyi filterType'a aktar
+    if (filterTypeFromUrl) {
+      setFilterType(filterTypeFromUrl);
+    }
+  
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -87,65 +94,50 @@ function PokemonList({ searchParams }) {
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchData();
-  }, [offset]);
+    };    fetchData();
+  }, [offset, filterTypeFromUrl]);
 
   useEffect(() => {
-    if (filterTypeFromUrl) {
-      setFilterType(filterTypeFromUrl);
+    if (filterType) {
+      filterPokemons();
     }
-  }, [filterTypeFromUrl]);
+  }, [filterType, searchTerm]);
 
-  async function handleSearch() {
-    if (searchTerm.length >= 3 || filterType) {
-      setIsSearchTriggered(true);
-      setLoading(true);
+  const filterPokemons = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllPokemon(0, 1025);
+      const searchResults = data.results.filter((pokemon) => {
+        const name = pokemon.name.toLowerCase();
+        const term = searchTerm.toLowerCase();
+        return term.split('').every(char => name.includes(char));
+      });
   
-      try {
-        // Pokémonları yeniden alıyoruz.
-        const data = await getAllPokemon(0, 1025);
-  
-        // Fuzzy matching (kapsamlı eşleşme): searchTerm içinde geçen Pokémon isimlerini alıyoruz
-        const searchResults = data.results.filter((pokemon) => {
-          const name = pokemon.name.toLowerCase();
-          const term = searchTerm.toLowerCase();
-          
-          // Eğer ismin içinde her karakterin sırasını göz önünde bulundurup buluyorsa
-          return term.split('').every(char => name.includes(char));
-        });
-  
-        // Detayları alıyoruz
-        const searchDetails = await Promise.all(
-          searchResults.map(async (pokemon) => {
-            const details = await getPokemonDetails(pokemon.url);
-            return { ...pokemon, ...details };
-          })
-        );
-  
-        // Tür filtresi uygularsak, türleri de filtreliyoruz.
-        const filteredResults = filterType
-          ? searchDetails.filter((pokemon) => pokemon.types.includes(filterType))
-          : searchDetails;
-  
-        setFilteredPokemon(filteredResults);
-      } catch (err) {
-        console.error("Error fetching search data:", err);
-      } finally {
-        setLoading(false);
-      }
+      const searchDetails = await Promise.all(
+        searchResults.map(async (pokemon) => {
+          const details = await getPokemonDetails(pokemon.url);
+          return { ...pokemon, ...details };
+        })
+      );
+
+      const filteredResults = filterType
+        ? searchDetails.filter((pokemon) => pokemon.types.includes(filterType))
+        : searchDetails;
+
+      setFilteredPokemon(filteredResults);
+    } catch (err) {
+      console.error("Error fetching filtered data:", err);
+    } finally {
+      setLoading(false);
     }
-  }
-  
-  
+  };
 
   const handleCancelSearch = () => {
     setSearchTerm("");
     setFilterType("");
     setFilteredPokemon(pokemonList);
     setIsSearchTriggered(false);
-    router.push(`/pokemon?page=1`);
+    router.push("/pokemon?page=1");
   };
 
   const handleTypeClick = (type) => {
@@ -153,80 +145,67 @@ function PokemonList({ searchParams }) {
     router.push(`/pokemon?page=1&type=${type}`);
   };
 
-  const getPageNumbers = (currentPage, totalPages) => {
-    const pageNumbers = [];
-    const range = 2;
-    pageNumbers.push(1);
-    for (let i = currentPage - range; i <= currentPage + range; i++) {
-      if (i > 1 && i < totalPages && !pageNumbers.includes(i)) {
-        pageNumbers.push(i);
-      }
+  const handleSearch = () => {
+    if (searchTerm.length < 3) {
+      setErrorMessage("Arama yapabilmek için en az 3 harf giriniz.");
+      setTimeout(() => setErrorMessage(""), 4000);
+      return;
     }
-    if (!pageNumbers.includes(totalPages)) {
-      pageNumbers.push(totalPages);
-    }
-    return pageNumbers;
+    setErrorMessage("");
+    filterPokemons();
   };
-
-  const pageNumbers = getPageNumbers(page, totalPages);
+  const shouldHidePagination = searchTerm || filterType;
 
   return (
     <div className="relative pt-12 overflow-hidden min-h-screen">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-sm" />
+      <section className="relative p-10 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
+        <div className="flex flex-col lg:flex-row relative sm:w-4/6 xl:w-3/6 mx-auto space-y-4 lg:space-y-0 md:space-x-1">
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center lg:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
+          >
+            <option value="">Tür Filtrele</option>
+            {typeOptions.map((type) => (
+              <option key={type} value={type}>
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder="Bir Pokemon Ara..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+            className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
+          />
+          <button
+            onClick={handleSearch}
+            className="px-6 py-2 flex bg-blue-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-blue-600 transition"
+          >
+            <FaSearch />
+          </button>
+          {(searchTerm || filterType) && (
+            <button
+              onClick={handleCancelSearch}
+              className="ml-2 px-6 py-2 flex bg-red-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-red-600 transition"
+            >
+              <FaTimes className="" />
+            </button>
+          )}
+        </div>
 
-<section className="relative p-10 z-10 pb-3 md:p-20 text-center text-white mt-52 md:mt-32">
-<div className="flex flex-col lg:flex-row relative w-full md:w-3/6 mx-auto space-y-4 lg:space-y-0 md:space-x-1">
-  <input
-    type="text"
-    placeholder="Bir Pokemon Ara..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        handleSearch();
-      }
-    }}
-    className="w-full px-8 py-2 text-lg bg-zinc-400 text-zinc-900 rounded-full shadow-2xl focus:outline-none placeholder-zinc-600"
-  />
-  <select
-    value={filterType}
-    onChange={(e) => setFilterType(e.target.value)}
-    className="py-2 px-2 bg-zinc-400 text-zinc-700 text-lg rounded-full text-center lg:text-start shadow-2xl appearance-none cursor-pointer focus:outline-none"
-  >
-    <option value="">Tür Filtrele</option>
-    {typeOptions.map((type) => (
-      <option key={type} value={type}>
-        {type.charAt(0).toUpperCase() + type.slice(1)}
-      </option>
-    ))}
-  </select>
-  <button
-    onClick={() => {
-      handleSearch();
-      setSearchTerm("");
-    }}
-    className="px-6 py-2 flex bg-blue-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-blue-600 transition"
-  >
-    <FaSearch />
-  </button>
-  {isSearchTriggered && (
-    <button
-      onClick={handleCancelSearch}
-      className="ml-2 px-6 py-2 flex bg-red-500 justify-center items-center text-white rounded-full shadow-xl hover:bg-red-600 transition"
-    >
-      <FaTimes className="" />
-    </button>
-  )}
-</div>
-
-{/* Eğer searchTerm veya filterType varsa ve butona basılmışsa, mesajı göster */}
-{(searchTerm || filterType) && !isSearchTriggered && (
-  <p className="text-sm text-rose-400 lg:text-lg mt-3">
-    ! Arama ve filtreleme işleminden sonra butona basınız.
-  </p>
+        {errorMessage && (
+  <div className="fixed  bg-red-700 left-1/2 transform -translate-x-1/2 mt-1 text-white p-3 rounded shadow-lg z-50">
+    {errorMessage}
+  </div>
 )}
-
-
 
         {loading && (
           <div className="flex justify-center items-center h-screen">
@@ -239,7 +218,7 @@ function PokemonList({ searchParams }) {
             <p className="text-5xl m-80 text-red-400">Pokémon bulunamadı.</p>
           </div>
         )}
-        <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 mt-28 md:grid-cols-2 gap-10">
+        <ul className="grid grid-cols-1 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 mt-20 gap-10">
           {filteredPokemon.map((pokemon, index) => (
             <li key={index} className="relative hover:scale-105   active:scale-95 active:shadow-red-900 transition-transform">
               <Link href={`/pokemon/${pokemon.url.split("/")[6]}`}>
@@ -259,33 +238,19 @@ function PokemonList({ searchParams }) {
             </li>
           ))}
         </ul>
-        {!isSearchTriggered && filteredPokemon.length > 0 && (
-        <div className="flex justify-center items-center space-x-4 mt-16">
-            <Link href={`?page=${page - 1}`} className={`text-3xl ${page === 1 && "hidden"} text-yellow-400`}>
-              <FaChevronLeft />
-            </Link>
-            {pageNumbers.map((pageNum) => (
-              <Link
-                key={pageNum}
-                href={`?page=${pageNum}`}
-                className={`text-lg font-semibold ${pageNum === page ? "bg-yellow-500 px-2 py-2" : "hover:text-yellow-400"} rounded-lg`}
-              >
-                {pageNum}
-              </Link>
-            ))}
-            <Link href={`?page=${page + 1}`} className={`text-3xl ${page === totalPages && "hidden"} text-yellow-400`}>
-              <FaChevronRight />
-            </Link>
-          </div>
-                  )}
+        {!shouldHidePagination && (
+      <div className="flex justify-center mt-16">
+        <Pagination
+          total={totalPages}
+          size="sm"
+          color="warning"
+          initialPage={page}
+          onChange={(e) => router.push(`/pokemon?page=${e}`)}
+        />
+      </div> )}
       </section>
     </div>
   );
 }
-export default function PokemonPage({ searchParams }) {
-  return (
-    <Suspense fallback={<div>Yükleniyor...</div>}>
-      <PokemonList searchParams={searchParams} />
-    </Suspense>
-  );
-}
+
+export default PokemonList;

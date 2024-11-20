@@ -139,7 +139,7 @@ export default function PokemonPage() {
   return (
 <div className="relative pt-12 overflow-hidden bg-gray-900">
       <Image src="/a.jpeg" alt="Pokémon Logo" width={1000} height={96} className="absolute inset-0 w-full h-full object-cover z-0 brightness-50 blur-md" />
-      <section className="relative p-8 md:p-28 text-center text-white mt-32 md:mt-16 z-10">
+      <section className="relative p-8 md:pt-24 2xl:px-20 text-center text-white mt-32 md:mt-16 z-10">
         {loading && (
           <div className="flex justify-center items-center h-screen">
             <img src="/loader.gif" alt="Yükleniyor..." className="w-40 h-40" />
@@ -152,9 +152,9 @@ export default function PokemonPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {sortedTypesByAvgStat.map(({ type, avgStat }) => (
-            <div key={type} className="px-4 lg:px-20 py-4">
+            <div key={type} className="px-4  py-4">
               <h2
                 className={`text-2xl cursor-pointer bg-zinc-950 bg-opacity-55 font-semibold py-2 rounded-lg transition transform hover:scale-105 ${getTypeEffect(type)}`}
                 onClick={() => handleTypeClick(type)}
