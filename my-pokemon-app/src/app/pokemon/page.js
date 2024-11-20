@@ -7,7 +7,7 @@ import { FaSearch, FaTimes } from "react-icons/fa";
 import { Pagination } from "@nextui-org/react";
 
 const ITEMS_PER_PAGE = 24;
-const TOTAL_POKEMON = 1025;
+const TOTAL_POKEMON = 500;
 
 // Tip görselleri
 const typeImages = {
@@ -106,7 +106,7 @@ function PokemonList({ searchParams }) {
   const filterPokemons = async () => {
     setLoading(true);
     try {
-      const data = await getAllPokemon(0, 1025);
+      const data = await getAllPokemon(0, 500);
       const searchResults = data.results.filter((pokemon) => {
         const name = pokemon.name.toLowerCase();
         const term = searchTerm.toLowerCase();

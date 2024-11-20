@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Pagination } from "@nextui-org/react";
 
 const ITEMS_PER_PAGE = 24;
-const TOTAL_POKEMON = 1000;
+const TOTAL_POKEMON = 500;
 
 const typeImages = {
   grass: "/grass.png",
@@ -30,7 +30,7 @@ const typeImages = {
 };
 
 async function getAllPokemon() {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=1000`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=500`);
   if (!res.ok) {
     throw new Error("Failed to fetch Pokémon data");
   }

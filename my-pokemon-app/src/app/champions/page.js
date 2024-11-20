@@ -156,7 +156,7 @@ export default function PokemonPage() {
           {sortedTypesByAvgStat.map(({ type, avgStat }) => (
             <div key={type} className="px-4  py-4">
               <h2
-                className={`text-2xl cursor-pointer bg-zinc-950 bg-opacity-55 font-semibold py-2 rounded-lg transition transform hover:scale-105 ${getTypeEffect(type)}`}
+                className={`text-2xl cursor-pointer bg-zinc-950 bg-opacity-55 font-semibold py-2 mx-4 lg:mx-10 rounded-lg transition transform hover:scale-105 ${getTypeEffect(type)}`}
                 onClick={() => handleTypeClick(type)}
               >
                 {type.toUpperCase()} - {Math.round(avgStat)}
